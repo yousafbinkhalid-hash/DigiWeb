@@ -1,6 +1,7 @@
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
 import IntroSection from "./components/IntroSection";
+import StepsSection from "./components/StepsSection";
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <Navbar brand="DigiWeb" />
       <HeroSection />
       <IntroSection />
+      <StepsSection />
     </>
   );
 }

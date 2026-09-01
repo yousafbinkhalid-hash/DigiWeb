@@ -17,8 +17,13 @@ body {
   margin: 0;
   padding: 0;
   background: #050914;
-  scroll-behavior: smooth;
 }
+
+/* Smooth scrolling is triggered per-click in Navbar (respecting
+   prefers-reduced-motion) instead of via CSS scroll-behavior: smooth.
+   That global property also smooths wheel/trackpad-driven scrolling in
+   some browsers, which fights the frame-by-frame scroll tracking used by
+   the pinned StepsSection. */
 
 #root {
   min-height: 100svh;

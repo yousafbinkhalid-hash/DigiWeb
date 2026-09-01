@@ -30,10 +30,20 @@ export default function Navbar({ brand = "DigiWeb" }) {
 
   const closeMenu = () => setOpen(false);
 
+  const handleNavClick = (e, href) => {
+    const target = document.querySelector(href);
+    if (target) {
+      e.preventDefault();
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    }
+    closeMenu();
+  };
+
   return (
     <header className={`nav ${scrolled ? "is-scrolled" : ""} ${open ? "menu-open" : ""}`}>
       <div className="nav__inner">
-        <a href="#home" className="nav__brand" onClick={closeMenu}>
+        <a href="#home" className="nav__brand" onClick={(e) => handleNavClick(e, "#home")}>
           <span className="nav__brand-mark" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none">
               <path
@@ -49,14 +59,19 @@ export default function Navbar({ brand = "DigiWeb" }) {
 
         <nav className="nav__links" aria-label="Primary">
           {LINKS.map((link) => (
-            <a key={link.href} href={link.href} className="nav__link">
+            <a
+              key={link.href}
+              href={link.href}
+              className="nav__link"
+              onClick={(e) => handleNavClick(e, link.href)}
+            >
               {link.label}
             </a>
           ))}
         </nav>
 
         <div className="nav__actions">
-          <a href="#contact" className="nav__cta">
+          <a href="#contact" className="nav__cta" onClick={(e) => handleNavClick(e, "#contact")}>
             Get a Quote
           </a>
 
@@ -76,11 +91,16 @@ export default function Navbar({ brand = "DigiWeb" }) {
 
       <div className={`nav__mobile ${open ? "is-open" : ""}`}>
         {LINKS.map((link) => (
-          <a key={link.href} href={link.href} className="nav__mobile-link" onClick={closeMenu}>
+          <a
+            key={link.href}
+            href={link.href}
+            className="nav__mobile-link"
+            onClick={(e) => handleNavClick(e, link.href)}
+          >
             {link.label}
           </a>
         ))}
-        <a href="#contact" className="nav__mobile-cta" onClick={closeMenu}>
+        <a href="#contact" className="nav__mobile-cta" onClick={(e) => handleNavClick(e, "#contact")}>
           Get a Quote
         </a>
       </div>
