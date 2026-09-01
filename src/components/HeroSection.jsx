@@ -100,7 +100,7 @@ export default function HeroSection({
   companyName = "DigiWeb",
   logoSrc = "",
   eyebrow = "Digital Agency",
-  headline = "We Build Websites\nThat Grow Your Business",
+  headline = "We Build Solutions\nThat Grow Your Business",
   subheadline = "DigiWeb designs, builds and supports high-performing websites and digital experiences — from first sketch to launch and beyond.",
   primaryCta = { label: "Start a Project", href: "#contact" },
   secondaryCta = { label: "Our Services", href: "#services" },
