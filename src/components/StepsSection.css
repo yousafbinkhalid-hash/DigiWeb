@@ -210,7 +210,7 @@
 .steps__body {
   padding-top: 2px;
   padding-bottom: 8px;
-  opacity: calc(0.10 + var(--p) * 0.90);
+  opacity: calc(0.05 + var(--p) * 0.95);
   transform: translateY(calc((1 - var(--p)) * 22px));
 }
 
