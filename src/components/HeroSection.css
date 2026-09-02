@@ -22,6 +22,12 @@
   height: 100dvh;
   width: 100%;
   overflow: hidden;
+  /* touch-action isn't inherited from the .pager__slide wrapper
+     SectionPager sets it on — CSS never inherits this property — so each
+     section that shouldn't scroll natively (this one included) has to
+     say so itself; Footer and mobile Contact set touch-action: pan-y
+     instead, since they're the two that do scroll internally. */
+  touch-action: none;
   display: flex;
   align-items: center;
   background:

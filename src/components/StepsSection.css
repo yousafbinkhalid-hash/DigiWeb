@@ -17,6 +17,11 @@
   overflow: hidden;
   height: 100%;
   width: 100%;
+  /* touch-action isn't inherited from the .pager__slide wrapper
+     SectionPager sets it on, so it has to be repeated on each section
+     that shouldn't scroll natively — see the matching note in
+     HeroSection.css. */
+  touch-action: none;
   display: flex;
   align-items: center;
   background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 100%);

@@ -30,6 +30,11 @@
      already at the top/bottom edge. */
   overflow-y: auto;
   overflow-x: hidden;
+  /* SectionPager sets touch-action: none on every slide by default so a
+     touchmove that should page the section never gets stolen by native
+     scrolling; the footer is the one slide that actually needs to scroll
+     with a finger, so it opts back in to vertical panning here. */
+  touch-action: pan-y;
   background: linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 100%);
   border-top: 1px solid var(--border);
   color: var(--text-1);

@@ -21,6 +21,16 @@
   height: 100dvh;
   width: 100%;
   transform-origin: center;
+  /* Tell the browser up front that this element isn't natively
+     scrollable, rather than relying only on touchmove's preventDefault to
+     stop it after the fact — on iOS Safari in particular, if the very
+     first touchmove of a gesture is allowed through, the browser commits
+     to its own scroll/rubber-band for that whole gesture and no later
+     preventDefault call can take it back. touch-action heads that off at
+     the point the gesture starts. Footer (always) and Contact (only at
+     the narrow breakpoint where it opts into internal scrolling) override
+     this back to pan-y so their own scrolling still works with a finger. */
+  touch-action: none;
   /* The "creative" part: neighboring slides are already scaled down,
      faded and softly blurred before they're even reached, so the page
      reads as a stack of cards receding in depth rather than a flat list —

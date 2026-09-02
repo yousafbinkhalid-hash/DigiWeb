@@ -50,6 +50,19 @@ const LAST_INDEX = SLIDES.length - 1;
 export default function SectionPager() {
   const [index, setIndex] = useState(0);
   const [stepIndex, setStepIndex] = useState(0);
+  // Mobile browsers resize the *visible* viewport as their address bar/
+  // toolbar shows or hides, and `100vh` famously does not track that — it
+  // stays pinned to the tallest the viewport ever gets, while each
+  // .pager__slide is sized with `100dvh`, which does track it. Paging by a
+  // flat `N * 100vh` transform (as CSS vh) while slides are laid out at
+  // `100dvh` heights drifts the two out of sync by exactly the toolbar's
+  // height per section on a real phone — invisible on desktop or in a
+  // fixed-size test viewport, where vh and dvh are identical, but on an
+  // actual device it makes swipes land short/long and stack sections out
+  // of alignment. Measuring the real pixel height in JS and animating in
+  // px sidesteps the mismatch entirely, since it tracks the same dynamic
+  // number `dvh` does rather than the static `vh` figure.
+  const [viewportH, setViewportH] = useState(() => (typeof window !== "undefined" ? window.innerHeight : 0));
 
   const indexRef = useRef(0);
   const stepIndexRef = useRef(0);
@@ -57,6 +70,7 @@ export default function SectionPager() {
   const unlockTimerRef = useRef(null);
   const prevIndexRef = useRef(0);
   const reduceMotionRef = useRef(false);
+  const trackRef = useRef(null);
 
   // Refs are only ever read from event handlers (never during render), but
   // they still need to be mutated outside of render itself, so the sync
@@ -71,6 +85,37 @@ export default function SectionPager() {
 
   useEffect(() => {
     reduceMotionRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }, []);
+
+  // Keep the measured viewport height current as a mobile browser's chrome
+  // shows/hides (address bar, keyboard, etc.) — visualViewport fires more
+  // reliably for this on mobile Safari than the plain resize event alone.
+  // The resulting transform correction has to land instantly rather than
+  // animate through the track's normal 900ms transition — that transition
+  // exists for deliberate section changes, and letting a mere toolbar
+  // show/hide (which can happen just from the user scrolling *inside*
+  // Footer/Contact's internal scroll) visibly slide the whole page would
+  // read as a spurious, unrequested page change.
+  useEffect(() => {
+    const onResize = () => {
+      const track = trackRef.current;
+      if (track) track.style.transition = "none";
+      setViewportH(window.innerHeight);
+      // Let the instant jump paint before handing the transition back to
+      // the CSS class, so a *real* section change right after this still
+      // animates normally.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (track) track.style.transition = "";
+        });
+      });
+    };
+    window.addEventListener("resize", onResize);
+    window.visualViewport?.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      window.visualViewport?.removeEventListener("resize", onResize);
+    };
   }, []);
 
   const lockFor = useCallback((ms) => {
@@ -238,7 +283,7 @@ export default function SectionPager() {
       <Navbar brand="DigiWeb" />
 
       <div className="pager">
-        <div className="pager__track" style={{ transform: `translateY(-${index * 100}vh)` }}>
+        <div className="pager__track" ref={trackRef} style={{ transform: `translateY(-${index * viewportH}px)` }}>
           {SLIDES.map((slide, i) => {
             const offset = i - index;
             const absOffset = Math.min(Math.abs(offset), 1);

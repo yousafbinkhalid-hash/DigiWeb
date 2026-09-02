@@ -20,6 +20,12 @@
   overflow: hidden;
   height: 100vh;
   height: 100dvh;
+  /* touch-action isn't inherited from the .pager__slide wrapper
+     SectionPager sets it on, so the default (no native scrolling) has to
+     be repeated here too — the narrow-viewport media query below, where
+     this section opts into scrolling internally, overrides it back to
+     pan-y, same as Footer. */
+  touch-action: none;
   display: flex;
   align-items: center;
   background:
@@ -603,6 +609,10 @@
     display: block;
     overflow-y: auto;
     overflow-x: hidden;
+    /* SectionPager sets touch-action: none on every slide by default, so
+       the finger-scroll this breakpoint depends on needs to be opted back
+       in here — same reasoning as Footer's touch-action. */
+    touch-action: pan-y;
     padding: clamp(90px, 16vw, 130px) 0 40px;
   }
 
