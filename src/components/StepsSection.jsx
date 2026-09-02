@@ -78,6 +78,20 @@ const POINTS = [
 
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
+// A little scroll-driven overshoot so each icon "pops" into place rather
+// than just fading up in lockstep with the text — still fully scrubbed by
+// scroll position, no fixed-duration animation to fall out of sync with.
+const easeOutBack = (t) => {
+  const c1 = 1.70158;
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+};
+
+// How much total scroll distance the pinned section consumes, in vh per
+// point (plus one unit of "hold" at the top before the first item starts
+// revealing). Lower = less scrolling required and a faster-feeling reveal.
+const SCROLL_VH_PER_UNIT = 82;
+
 export default function StepsSection() {
   const wrapperRef = useRef(null);
   const itemRefs = useRef([]);
@@ -105,6 +119,7 @@ export default function StepsSection() {
         // Item i ramps from 0 -> 1 while p travels from (i+1) to (i+2)
         const itemP = clamp(p - (i + 1), 0, 1);
         el.style.setProperty("--p", itemP.toFixed(4));
+        el.style.setProperty("--pop", easeOutBack(itemP).toFixed(4));
         el.classList.toggle("is-revealed", itemP > 0.02);
         el.classList.toggle("is-current", itemP > 0.02 && itemP < 0.98);
         el.classList.toggle("is-done", itemP >= 0.98);
@@ -138,7 +153,7 @@ export default function StepsSection() {
       id="why-us"
       ref={wrapperRef}
       className="steps"
-      style={{ height: `${(POINTS.length + 1) * 100}vh` }}
+      style={{ height: `${(POINTS.length + 1) * SCROLL_VH_PER_UNIT}vh` }}
     >
       <div className="steps__pin">
         <div className="steps__grid" aria-hidden="true" />
@@ -175,6 +190,9 @@ export default function StepsSection() {
                   ref={(el) => (itemRefs.current[i] = el)}
                   className="steps__item"
                 >
+                  <div className="steps__icon" style={{ "--float-delay": `${i * -0.6}s` }}>
+                    <Icon />
+                  </div>
                   <div className="steps__rail">
                     <span className="steps__number">{String(i + 1).padStart(2, "0")}</span>
                     {!isLast && (
@@ -184,9 +202,6 @@ export default function StepsSection() {
                     )}
                   </div>
                   <div className="steps__body">
-                    <div className="steps__icon">
-                      <Icon />
-                    </div>
                     <h3 className="steps__title">{point.title}</h3>
                     <p className="steps__desc">{point.description}</p>
                   </div>
