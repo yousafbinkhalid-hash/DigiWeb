@@ -16,7 +16,14 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  scroll-margin-top: var(--nav-h);
+  /* No scroll-margin-top here: the navbar is a fixed, transparent-until-
+     scrolled overlay, not part of normal flow, and this section already
+     reserves nav-h via its own padding-top (see --pad-y above). Scrolling
+     or snapping to this section should land its top flush at the very
+     top of the viewport (y=0) — adding scroll-margin-top would stop the
+     scroll nav-h too early, leaving a gap between the navbar and the
+     section instead of the section starting right under it. */
+  scroll-snap-align: start;
   height: 100vh;
   height: 100dvh;
   display: flex;

@@ -1,4 +1,5 @@
 .steps {
+  scroll-snap-align: start;
   --bg-0: #050914;
   --bg-1: #0a1225;
   --panel: rgba(255, 255, 255, 0.04);

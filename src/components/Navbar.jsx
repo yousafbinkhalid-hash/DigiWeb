@@ -32,8 +32,14 @@ export default function Navbar({ brand = "DigiWeb" }) {
 
   const handleNavClick = (e, href) => {
     const target = document.querySelector(href);
+    // Always prevent the default anchor jump: when the target exists we
+    // drive the scroll ourselves (below), and when it doesn't yet exist
+    // (Work/Contact have no section built yet) letting the browser jump
+    // the URL to a dead #hash leaves the address bar pointing at content
+    // that was never scrolled to — confusing, and easy to mistake for a
+    // layout bug. Just close the menu and leave the page where it is.
+    e.preventDefault();
     if (target) {
-      e.preventDefault();
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
     }

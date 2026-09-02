@@ -25,6 +25,22 @@ body {
    some browsers, which fights the frame-by-frame scroll tracking used by
    the pinned StepsSection. */
 
+/* Every top-level section is exactly one viewport tall and its content is
+   deliberately centered within that viewport (see the --pad-y notes in
+   each section's CSS). That centering only reads as "aligned" when the
+   section is actually framed edge-to-edge in the viewport — if the user
+   stops scrolling partway through a section (or lands there via a nav
+   link with no matching target), the same centered content looks
+   arbitrarily offset. Scroll snapping removes that ambiguity: any scroll
+   that ends near a section boundary settles exactly on it, on every
+   device/input method, so the centering fix is what people actually see.
+   "proximity" (not "mandatory") only pulls in when already close, so it
+   never fights the trackpad/wheel-driven scroll math StepsSection uses
+   for its pinned reveal. */
+html {
+  scroll-snap-type: y proximity;
+}
+
 #root {
   min-height: 100svh;
 }
