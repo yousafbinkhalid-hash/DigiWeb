@@ -1,0 +1,688 @@
+/* ======================================================================
+   ContactSection — design tokens
+   ====================================================================== */
+.contact {
+  --bg-0: #050914;
+  --bg-1: #0a1225;
+  --panel: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --brand-400: #4fb3ff;
+  --brand-300: #8fd3ff;
+  --cyan: #2fe0ff;
+  --text-0: #f5f8ff;
+  --text-1: #b7c2dd;
+  --text-2: #7c88a8;
+  --nav-h: 76px;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* No scroll-margin-top: the navbar overlays the page and this section
+     reserves nav-h itself via --pad-y below, so it should snap flush at
+     viewport y=0 — see the matching note in ServicesSection.css. */
+  scroll-snap-align: start;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(1000px 560px at 85% 10%, rgba(47, 143, 255, 0.14), transparent 60%),
+    linear-gradient(180deg, var(--bg-0) 0%, #071022 55%, var(--bg-1) 100%);
+  color: var(--text-0);
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+.contact__grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, #000 30%, transparent 88%);
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, #000 30%, transparent 88%);
+  opacity: 0.6;
+}
+
+.contact__blob {
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(76px);
+  pointer-events: none;
+}
+
+.contact__blob--a {
+  top: -12%;
+  right: -8%;
+  width: 40vw;
+  height: 40vw;
+  max-width: 480px;
+  max-height: 480px;
+  background: radial-gradient(circle, rgba(47, 224, 255, 0.16), transparent 70%);
+}
+
+.contact__blob--b {
+  bottom: -16%;
+  left: -8%;
+  width: 34vw;
+  height: 34vw;
+  max-width: 420px;
+  max-height: 420px;
+  background: radial-gradient(circle, rgba(47, 143, 255, 0.16), transparent 70%);
+}
+
+.contact__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    460px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+    rgba(79, 179, 255, 0.12),
+    transparent 70%
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  Layout                                                                 */
+/* ---------------------------------------------------------------------- */
+
+.contact__inner {
+  /* Symmetric top/bottom padding for true vertical centering — see the
+     matching note in HeroSection.css. */
+  --pad-y: 16px;
+
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1180px;
+  max-height: 100%;
+  margin: 0 auto;
+  padding-left: clamp(20px, 4vw, 48px);
+  padding-right: clamp(20px, 4vw, 48px);
+  padding-bottom: var(--pad-y);
+  padding-top: calc(var(--nav-h) + var(--pad-y));
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+}
+
+/* Left: info column ------------------------------------------------------ */
+
+.contact__info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact__info.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brand-300);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.contact__eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(47, 224, 255, 0.2);
+  animation: contactPulseDot 1.8s ease-in-out infinite;
+}
+
+.contact__heading {
+  margin: clamp(10px, 1.8vh, 18px) 0 0;
+  font-size: clamp(1.7rem, 3.4vh, 2.5rem);
+  line-height: 1.16;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.contact__heading-line {
+  display: block;
+  background: linear-gradient(100deg, #ffffff 30%, var(--brand-300) 70%, var(--cyan) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.contact__subheading {
+  margin: clamp(8px, 1.4vh, 16px) 0 0;
+  max-width: 46ch;
+  font-size: clamp(0.88rem, 1.1vw, 1.02rem);
+  line-height: 1.6;
+  color: var(--text-1);
+}
+
+/* Live availability status — a second, distinct pill from the eyebrow so
+   it reads as a real-time signal rather than a static label. */
+
+.contact__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: clamp(12px, 2vh, 20px);
+  padding: 7px 14px 7px 11px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #baf7d6;
+  background: rgba(53, 224, 161, 0.1);
+  border: 1px solid rgba(53, 224, 161, 0.3);
+}
+
+.contact__status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #35e0a1;
+  box-shadow: 0 0 0 3px rgba(53, 224, 161, 0.22);
+  animation: contactPulseDot 1.8s ease-in-out infinite;
+}
+
+/* Contact info rows -------------------------------------------------- */
+
+.contact__list {
+  list-style: none;
+  margin: clamp(16px, 3vh, 30px) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.contact__row-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.contact__row-link:hover {
+  background: var(--panel);
+  transform: translateX(4px);
+}
+
+.contact__row-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  color: var(--cyan);
+  background: rgba(47, 224, 255, 0.1);
+  border: 1px solid rgba(47, 224, 255, 0.25);
+}
+
+.contact__row-icon svg {
+  width: 50%;
+  height: 50%;
+}
+
+.contact__row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.contact__row-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.contact__row-value {
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: var(--text-0);
+}
+
+/* Highlight stat chips -------------------------------------------------- */
+
+.contact__highlights {
+  display: flex;
+  gap: clamp(14px, 2.4vw, 28px);
+  margin-top: clamp(14px, 2.6vh, 26px);
+}
+
+.contact__highlight {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contact__highlight strong {
+  font-size: clamp(1.05rem, 1.8vh, 1.3rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  background: linear-gradient(120deg, #ffffff, var(--brand-300));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.contact__highlight span {
+  font-size: 0.72rem;
+  color: var(--text-2);
+}
+
+/* Social icons ------------------------------------------------------- */
+
+.contact__socials {
+  display: flex;
+  gap: 10px;
+  margin-top: clamp(16px, 2.8vh, 28px);
+}
+
+.contact__social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  color: var(--text-1);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  transition: color 0.25s ease, border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
+}
+
+.contact__social svg {
+  width: 46%;
+  height: 46%;
+}
+
+.contact__social:hover {
+  color: var(--text-0);
+  border-color: rgba(47, 224, 255, 0.4);
+  background: rgba(47, 224, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Right: form card ----------------------------------------------------- */
+
+.contact__form-wrap {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+}
+
+.contact__form-wrap.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact__form {
+  position: relative;
+  width: 100%;
+  padding: clamp(20px, 3vw, 32px);
+  border-radius: 22px;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+  border: 1px solid var(--border);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+}
+
+.contact__panel {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.8vh, 18px);
+  transition: opacity 0.3s ease;
+}
+
+.contact__panel.is-hidden {
+  display: none;
+}
+
+.contact__field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(12px, 1.8vw, 18px);
+}
+
+.contact__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contact__field-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.contact__field label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-1);
+}
+
+.contact__counter {
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-2);
+  transition: color 0.2s ease;
+}
+
+.contact__counter.is-low {
+  color: #ffb37a;
+}
+
+.contact__field input,
+.contact__field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 0.92rem;
+  color: var(--text-0);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  resize: vertical;
+}
+
+.contact__field input::placeholder,
+.contact__field textarea::placeholder {
+  color: var(--text-2);
+}
+
+.contact__field input:hover,
+.contact__field textarea:hover {
+  border-color: var(--border-strong);
+}
+
+.contact__field input:focus,
+.contact__field textarea:focus {
+  border-color: var(--brand-400);
+  background: rgba(79, 179, 255, 0.06);
+  box-shadow: 0 0 0 4px rgba(79, 179, 255, 0.14);
+}
+
+.contact__field.has-error input,
+.contact__field.has-error textarea {
+  border-color: rgba(255, 107, 107, 0.55);
+}
+
+.contact__error {
+  font-size: 0.74rem;
+  color: #ff9b9b;
+}
+
+.contact__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+  padding: 13px 24px;
+  border: none;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #06101f;
+  background: linear-gradient(120deg, var(--brand-400), var(--cyan));
+  box-shadow: 0 10px 30px -8px rgba(47, 143, 255, 0.55);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+}
+
+.contact__submit svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.25s ease;
+}
+
+.contact__submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px -10px rgba(47, 143, 255, 0.7);
+}
+
+.contact__submit:hover:not(:disabled) svg {
+  transform: translateX(3px);
+}
+
+.contact__submit:disabled {
+  cursor: progress;
+  opacity: 0.85;
+}
+
+.contact__spinner {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid rgba(6, 16, 31, 0.3);
+  border-top-color: #06101f;
+  animation: contactSpin 0.7s linear infinite;
+}
+
+.contact__form-note {
+  margin: 2px 0 0;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+/* Success state --------------------------------------------------------- */
+
+.contact__success {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  padding: clamp(20px, 3vw, 32px);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.96);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
+}
+
+.contact__success.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.contact__success-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  color: #35e0a1;
+  background: rgba(53, 224, 161, 0.12);
+  border: 1px solid rgba(53, 224, 161, 0.4);
+  animation: contactPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.contact__success-icon svg {
+  width: 46%;
+  height: 46%;
+}
+
+.contact__success h3 {
+  margin: 4px 0 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-0);
+}
+
+.contact__success p {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-1);
+}
+
+/* ---------------------------------------------------------------------- */
+/*  Keyframes                                                             */
+/* ---------------------------------------------------------------------- */
+
+@keyframes contactPulseDot {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(47, 224, 255, 0.2); }
+  50% { box-shadow: 0 0 0 6px rgba(47, 224, 255, 0.08); }
+}
+
+@keyframes contactSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes contactPopIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact__info,
+  .contact__form-wrap,
+  .contact__success-icon {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/*  Responsive                                                            */
+/* ---------------------------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .contact {
+    --nav-h: 64px;
+  }
+}
+
+@media (max-width: 980px) {
+  .contact {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: block;
+    padding: clamp(90px, 16vw, 130px) 0 40px;
+  }
+
+  .contact__inner {
+    --pad-y: 0px;
+    padding-top: 0;
+    padding-bottom: 0;
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .contact__info {
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact__subheading {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .contact__row-link {
+    width: 100%;
+  }
+
+  .contact__highlights {
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+  }
+
+  .contact__highlight {
+    align-items: center;
+  }
+}
+
+@media (max-width: 620px) {
+  .contact__field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Short-viewport compaction (matches the approach used across the other
+   sections) for the desktop/laptop range where Contact stays a fixed
+   100dvh panel. */
+@media (min-width: 981px) and (max-height: 860px) {
+  .contact__inner {
+    --pad-y: 6px;
+  }
+
+  .contact__status {
+    margin-top: 10px;
+  }
+
+  .contact__list {
+    margin-top: 16px;
+    gap: 6px;
+  }
+
+  .contact__row-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .contact__highlights,
+  .contact__socials {
+    margin-top: 12px;
+  }
+
+  .contact__form {
+    padding: clamp(16px, 2.4vw, 24px);
+  }
+
+  .contact__panel {
+    gap: 10px;
+  }
+}
+
+@media (min-width: 981px) and (max-height: 720px) {
+  .contact__subheading {
+    display: none;
+  }
+
+  .contact__highlights {
+    display: none;
+  }
+}

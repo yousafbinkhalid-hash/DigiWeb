@@ -1,5 +1,12 @@
 .nav {
   --nav-h: 76px;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --brand-400: #4fb3ff;
+  --brand-300: #8fd3ff;
+  --cyan: #2fe0ff;
+  --text-0: #f5f8ff;
+  --text-1: #b7c2dd;
 
   position: fixed;
   top: 0;
@@ -11,6 +18,11 @@
   align-items: center;
   background: transparent;
   border-bottom: 1px solid transparent;
+  /* Every other section on the page sets this explicitly; the navbar sits
+     outside them all as a fixed sibling, so without its own declaration
+     here it was falling back to the browser's default serif font instead
+     of matching the rest of the site. */
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, backdrop-filter 0.35s ease;
 }
 
@@ -41,7 +53,7 @@
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  color: #f5f8ff;
+  color: var(--text-0);
   flex-shrink: 0;
 }
 
@@ -53,7 +65,7 @@
   height: 34px;
   border-radius: 9px;
   color: #06101f;
-  background: linear-gradient(135deg, #4fb3ff, #2fe0ff);
+  background: linear-gradient(135deg, var(--brand-400), var(--cyan));
   box-shadow: 0 6px 18px -6px rgba(47, 143, 255, 0.7);
 }
 
@@ -79,8 +91,9 @@
 .nav__link {
   position: relative;
   font-size: 0.92rem;
-  font-weight: 500;
-  color: #b7c2dd;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--text-1);
   text-decoration: none;
   padding: 6px 0;
   transition: color 0.25s ease;
@@ -94,15 +107,25 @@
   bottom: 0;
   height: 2px;
   border-radius: 2px;
-  background: linear-gradient(90deg, #4fb3ff, #2fe0ff);
+  background: linear-gradient(90deg, var(--brand-400), var(--cyan));
   transition: right 0.3s ease;
 }
 
 .nav__link:hover {
-  color: #f5f8ff;
+  color: var(--text-0);
 }
 
 .nav__link:hover::after {
+  right: 0;
+}
+
+/* Scroll-spy active state — a persistent indicator (not just on hover) so
+   the nav always reflects which section is actually in view. */
+.nav__link.is-active {
+  color: var(--text-0);
+}
+
+.nav__link.is-active::after {
   right: 0;
 }
 
@@ -121,9 +144,10 @@
   border-radius: 10px;
   font-size: 0.88rem;
   font-weight: 700;
+  letter-spacing: 0.01em;
   color: #06101f;
   text-decoration: none;
-  background: linear-gradient(120deg, #4fb3ff, #2fe0ff);
+  background: linear-gradient(120deg, var(--brand-400), var(--cyan));
   box-shadow: 0 8px 22px -8px rgba(47, 143, 255, 0.6);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   white-space: nowrap;
@@ -155,7 +179,7 @@
   width: 18px;
   height: 2px;
   border-radius: 2px;
-  background: #f5f8ff;
+  background: var(--text-0);
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -207,13 +231,18 @@
   padding: 13px 0;
   font-size: 1rem;
   font-weight: 600;
-  color: #e7ecfb;
+  color: var(--text-1);
   text-decoration: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: color 0.2s ease;
 }
 
 .nav__mobile-link:last-of-type {
   border-bottom: none;
+}
+
+.nav__mobile-link.is-active {
+  color: var(--cyan);
 }
 
 .nav__mobile-cta {
@@ -227,7 +256,7 @@
   font-weight: 700;
   color: #06101f;
   text-decoration: none;
-  background: linear-gradient(120deg, #4fb3ff, #2fe0ff);
+  background: linear-gradient(120deg, var(--brand-400), var(--cyan));
 }
 
 @media (max-width: 900px) {

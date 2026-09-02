@@ -3,6 +3,8 @@ import HeroSection from "./components/HeroSection";
 import IntroSection from "./components/IntroSection";
 import ServicesSection from "./components/ServicesSection";
 import StepsSection from "./components/StepsSection";
+import ContactSection from "./components/ContactSection";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
       <IntroSection />
       <ServicesSection />
       <StepsSection />
+      <ContactSection />
+      <Footer brand="DigiWeb" />
     </>
   );
 }

@@ -1,23 +1,50 @@
 import { useEffect, useState } from "react";
 import "./Navbar.css";
 
+// Ordered to match the actual page flow (Home -> About -> Services ->
+// Contact) rather than an arbitrary order, and limited to links that
+// resolve to a real section — a nav item that goes nowhere reads as
+// broken rather than professional.
 const LINKS = [
   { label: "Home", href: "#home" },
-  { label: "Services", href: "#services" },
   { label: "About", href: "#about" },
-  { label: "Work", href: "#work" },
+  { label: "Services", href: "#services" },
   { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar({ brand = "DigiWeb" }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [activeHref, setActiveHref] = useState(LINKS[0].href);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Scroll-spy: highlight whichever nav link matches the section currently
+  // most visible in the viewport, so the nav reflects where you actually
+  // are on the page instead of staying static.
+  useEffect(() => {
+    const targets = LINKS.map((link) => document.querySelector(link.href)).filter(Boolean);
+    if (!targets.length) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting);
+        if (!visible.length) return;
+        const topMost = visible.reduce((best, entry) =>
+          entry.intersectionRatio > best.intersectionRatio ? entry : best
+        );
+        setActiveHref(`#${topMost.target.id}`);
+      },
+      { threshold: [0.35, 0.5, 0.65], rootMargin: "-20% 0px -20% 0px" }
+    );
+
+    targets.forEach((target) => observer.observe(target));
+    return () => observer.disconnect();
   }, []);
 
   // Lock body scroll while the mobile menu is open
@@ -68,7 +95,8 @@ export default function Navbar({ brand = "DigiWeb" }) {
             <a
               key={link.href}
               href={link.href}
-              className="nav__link"
+              className={`nav__link ${activeHref === link.href ? "is-active" : ""}`}
+              aria-current={activeHref === link.href ? "true" : undefined}
               onClick={(e) => handleNavClick(e, link.href)}
             >
               {link.label}
@@ -100,7 +128,8 @@ export default function Navbar({ brand = "DigiWeb" }) {
           <a
             key={link.href}
             href={link.href}
-            className="nav__mobile-link"
+            className={`nav__mobile-link ${activeHref === link.href ? "is-active" : ""}`}
+            aria-current={activeHref === link.href ? "true" : undefined}
             onClick={(e) => handleNavClick(e, link.href)}
           >
             {link.label}
