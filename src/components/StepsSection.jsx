@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import "./StepsSection.css";
 
 /* ---------------------------------------------------------------------- */
@@ -76,140 +75,79 @@ const POINTS = [
   },
 ];
 
-const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
-
-// A little scroll-driven overshoot so each icon "pops" into place rather
-// than just fading up in lockstep with the text — still fully scrubbed by
-// scroll position, no fixed-duration animation to fall out of sync with.
-const easeOutBack = (t) => {
-  const c1 = 1.70158;
-  const c3 = c1 + 1;
-  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
-};
-
-// How much total scroll distance the pinned section consumes, in vh per
-// point (plus one unit of "hold" at the top before the first item starts
-// revealing). Lower = less scrolling required and a faster-feeling reveal.
-const SCROLL_VH_PER_UNIT = 82;
-
-export default function StepsSection() {
-  const wrapperRef = useRef(null);
-  const itemRefs = useRef([]);
-  const counterRef = useRef(null);
-  const hintRef = useRef(null);
-
-  useEffect(() => {
-    const wrapper = wrapperRef.current;
-    if (!wrapper) return undefined;
-
-    const N = POINTS.length;
-    let raf = null;
-
-    const update = () => {
-      raf = null;
-      const rect = wrapper.getBoundingClientRect();
-      const vh = window.innerHeight || 1;
-      const total = wrapper.offsetHeight - vh;
-      const scrolledInto = -rect.top;
-      const progress = total > 0 ? clamp(scrolledInto / total, 0, 1) : 0;
-      const p = progress * (N + 1); // continuous 0..N+1
-
-      itemRefs.current.forEach((el, i) => {
-        if (!el) return;
-        // Item i ramps from 0 -> 1 while p travels from (i+1) to (i+2)
-        const itemP = clamp(p - (i + 1), 0, 1);
-        el.style.setProperty("--p", itemP.toFixed(4));
-        el.style.setProperty("--pop", easeOutBack(itemP).toFixed(4));
-        el.classList.toggle("is-revealed", itemP > 0.02);
-        el.classList.toggle("is-current", itemP > 0.02 && itemP < 0.98);
-        el.classList.toggle("is-done", itemP >= 0.98);
-      });
-
-      const revealedCount = clamp(Math.floor(p), 0, N);
-      if (counterRef.current) {
-        counterRef.current.textContent = String(revealedCount).padStart(2, "0");
-      }
-      if (hintRef.current) {
-        hintRef.current.style.opacity = String(clamp(1 - p, 0, 1));
-      }
-    };
-
-    const onScroll = () => {
-      if (raf === null) raf = requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
+/**
+ * StepsSection
+ *
+ * Unlike the other sections, this one no longer reads the page's own
+ * scroll position — the whole site now pages between sections one wheel
+ * tick/swipe/arrow-key at a time (see SectionPager), so "keep scrolling to
+ * reveal the next point" instead means "keep scrolling while this section
+ * is active". SectionPager feeds that progress in as `activeStep`
+ * (0..POINTS.length): each additional scroll tick while this slide is
+ * active increments it by one before control moves on to the next slide,
+ * and each item's reveal/pop-in is animated by a CSS transition (see
+ * StepsSection.css) rather than a per-frame scroll calculation.
+ */
+export default function StepsSection({ activeStep = 0 }) {
+  const N = POINTS.length;
 
   return (
-    <section
-      id="why-us"
-      ref={wrapperRef}
-      className="steps"
-      style={{ height: `${(POINTS.length + 1) * SCROLL_VH_PER_UNIT}vh` }}
-    >
-      <div className="steps__pin">
-        <div className="steps__grid" aria-hidden="true" />
+    <section id="why-us" className="steps">
+      <div className="steps__grid" aria-hidden="true" />
 
-        <div className="steps__inner">
-          <div className="steps__head">
-            <span className="steps__eyebrow">
-              <span className="steps__eyebrow-dot" />
-              Why DigiWeb
-            </span>
-            <h2 className="steps__heading">What Sets Us Apart</h2>
-            <p className="steps__subheading">Five reasons growing brands build with us.</p>
+      <div className="steps__inner">
+        <div className="steps__head">
+          <span className="steps__eyebrow">
+            <span className="steps__eyebrow-dot" />
+            Why DigiWeb
+          </span>
+          <h2 className="steps__heading">What Sets Us Apart</h2>
+          <p className="steps__subheading">Five reasons growing brands build with us.</p>
 
-            <div className="steps__counter" aria-hidden="true">
-              <span ref={counterRef}>00</span>
-              <span className="steps__counter-total">/ {String(POINTS.length).padStart(2, "0")}</span>
-            </div>
-
-            <div ref={hintRef} className="steps__hint">
-              <span>Keep scrolling</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <path d="M12 4v15M6 13l6 6 6-6" />
-              </svg>
-            </div>
+          <div className="steps__counter" aria-hidden="true">
+            <span>{String(Math.min(activeStep, N)).padStart(2, "0")}</span>
+            <span className="steps__counter-total">/ {String(N).padStart(2, "0")}</span>
           </div>
 
-          <ol className="steps__list">
-            {POINTS.map((point, i) => {
-              const Icon = point.icon;
-              const isLast = i === POINTS.length - 1;
-              return (
-                <li
-                  key={point.title}
-                  ref={(el) => (itemRefs.current[i] = el)}
-                  className="steps__item"
-                >
-                  <div className="steps__icon" style={{ "--float-delay": `${i * -0.6}s` }}>
-                    <Icon />
-                  </div>
-                  <div className="steps__rail">
-                    <span className="steps__number">{String(i + 1).padStart(2, "0")}</span>
-                    {!isLast && (
-                      <span className="steps__connector">
-                        <span className="steps__connector-fill" />
-                      </span>
-                    )}
-                  </div>
-                  <div className="steps__body">
-                    <h3 className="steps__title">{point.title}</h3>
-                    <p className="steps__desc">{point.description}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
+          <div className="steps__hint" style={{ opacity: activeStep >= N ? 0 : 1 }}>
+            <span>Keep scrolling</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <path d="M12 4v15M6 13l6 6 6-6" />
+            </svg>
+          </div>
         </div>
+
+        <ol className="steps__list">
+          {POINTS.map((point, i) => {
+            const Icon = point.icon;
+            const isLast = i === N - 1;
+            const revealed = activeStep > i;
+            const isCurrent = activeStep === i + 1;
+            return (
+              <li
+                key={point.title}
+                className={`steps__item ${revealed ? "is-revealed" : ""} ${isCurrent ? "is-current" : ""} ${revealed && !isCurrent ? "is-done" : ""}`}
+                style={{ "--p": revealed ? 1 : 0, "--float-delay": `${i * -0.6}s` }}
+              >
+                <div className="steps__icon">
+                  <Icon />
+                </div>
+                <div className="steps__rail">
+                  <span className="steps__number">{String(i + 1).padStart(2, "0")}</span>
+                  {!isLast && (
+                    <span className="steps__connector">
+                      <span className="steps__connector-fill" />
+                    </span>
+                  )}
+                </div>
+                <div className="steps__body">
+                  <h3 className="steps__title">{point.title}</h3>
+                  <p className="steps__desc">{point.description}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
       </div>
     </section>
   );

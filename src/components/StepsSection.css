@@ -1,5 +1,4 @@
 .steps {
-  scroll-snap-align: start;
   --bg-0: #050914;
   --bg-1: #0a1225;
   --panel: rgba(255, 255, 255, 0.04);
@@ -15,14 +14,9 @@
 
   position: relative;
   isolation: isolate;
-}
-
-.steps__pin {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  height: 100dvh;
   overflow: hidden;
+  height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 100%);
@@ -44,12 +38,8 @@
 }
 
 .steps__inner {
-  /* See the matching note in HeroSection.css — a single --pad-y value
-     drives both padding-top (plus the navbar offset) and padding-bottom,
-     so the content stays exactly centered in the pinned 100dvh viewport
-     below the navbar at every breakpoint. Every responsive tier below
-     only ever overrides this one variable (never padding-top/bottom
-     directly) so symmetry can never drift out of sync. */
+  /* Symmetric top/bottom padding for true vertical centering — see the
+     matching note in HeroSection.css. */
   --pad-y: 18px;
 
   position: relative;
@@ -130,6 +120,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  transition: opacity 0.2s ease;
 }
 
 .steps__counter-total {
@@ -147,7 +138,7 @@
   font-weight: 600;
   letter-spacing: 0.03em;
   color: var(--text-2);
-  transition: opacity 0.2s linear;
+  transition: opacity 0.3s ease;
 }
 
 .steps__hint svg {
@@ -173,7 +164,6 @@
 
 .steps__item {
   --p: 0;
-  --pop: 0;
   display: flex;
   align-items: flex-start;
   gap: 18px;
@@ -219,6 +209,7 @@
   transform-origin: top;
   transform: scaleY(var(--p));
   background: linear-gradient(180deg, var(--brand-400), var(--cyan));
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .steps__body {
@@ -228,12 +219,14 @@
   padding-bottom: 8px;
   opacity: calc(0.05 + var(--p) * 0.95);
   transform: translateY(calc((1 - var(--p)) * 22px));
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Icon — big, floating, and "popping" into place: it scales in with a
-   scroll-driven overshoot (see --pop, set from JS via easeOutBack) rather
-   than a plain fade, bobs continuously once revealed, and sits on its own
-   glowing card so it reads as the focal point of each step. ------------- */
+/* Icon — big, floating, and "popping" into place: a scroll-tick-driven
+   reveal with a CSS overshoot easing (cubic-bezier back-out) stands in for
+   the old scroll-scrubbed easeOutBack curve, still bobs continuously once
+   revealed, and sits on its own glowing card so it reads as the focal
+   point of each step. ------------------------------------------------- */
 
 .steps__icon {
   --hover-boost: 1;
@@ -252,12 +245,13 @@
     0 14px 30px -12px rgba(47, 143, 255, 0.6),
     0 0 26px -6px rgba(47, 224, 255, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  opacity: min(1, var(--pop, 0));
-  transform: scale(calc(var(--pop, 0) * var(--hover-boost)));
+  opacity: calc(0.05 + var(--p) * 0.95);
+  transform: scale(calc((0.6 + var(--p) * 0.4) * var(--hover-boost)));
   translate: 0 0;
   animation: iconFloat 3.2s ease-in-out infinite;
   animation-delay: var(--float-delay, 0s);
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.4s ease;
 }
 
 .steps__item.is-current .steps__icon,
@@ -330,9 +324,10 @@
 /* ---------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .steps__body {
-    opacity: 1;
-    transform: none;
+  .steps__body,
+  .steps__icon,
+  .steps__connector-fill {
+    transition-duration: 0.001ms !important;
   }
 
   .steps__hint svg {
@@ -457,7 +452,7 @@
 }
 
 /* Compaction for short desktop/laptop viewports (very common at 1366x768,
-   1280x720, 1536x864 etc.) so all 5 items fit inside the pinned 100dvh area
+   1280x720, 1536x864 etc.) so all 5 items fit inside the 100dvh area
    without being clipped by overflow: hidden. */
 @media (min-width: 901px) and (max-height: 920px) {
   .steps__inner {
@@ -568,7 +563,7 @@
 }
 
 /* Extra compaction for short mobile viewports so all 5 items fit without
-   clipping inside the pinned 100dvh area. */
+   clipping inside the 100dvh area. */
 @media (max-width: 900px) and (max-height: 720px) {
   .steps__inner {
     --pad-y: calc(clamp(64px, 11vw, 88px) - var(--nav-h));

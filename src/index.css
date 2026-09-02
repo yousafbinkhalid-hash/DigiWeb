@@ -12,37 +12,25 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* The page no longer scrolls natively at all — SectionPager owns
+   navigation entirely (one wheel tick/swipe/arrow-key per section, via a
+   transform on its own fixed-position track) and prevents the default
+   action on every wheel/touch event it handles. Locking html/body here
+   stops the native scrollbar, rubber-band/bounce, and any residual scroll
+   from ever fighting that transform. overscroll-behavior belts-and-braces
+   against pull-to-refresh / swipe-navigation gestures on mobile browsers. */
 html,
 body {
   margin: 0;
   padding: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
   background: #050914;
 }
 
-/* Smooth scrolling is triggered per-click in Navbar (respecting
-   prefers-reduced-motion) instead of via CSS scroll-behavior: smooth.
-   That global property also smooths wheel/trackpad-driven scrolling in
-   some browsers, which fights the frame-by-frame scroll tracking used by
-   the pinned StepsSection. */
-
-/* Every top-level section is exactly one viewport tall and its content is
-   deliberately centered within that viewport (see the --pad-y notes in
-   each section's CSS). That centering only reads as "aligned" when the
-   section is actually framed edge-to-edge in the viewport — if the user
-   stops scrolling partway through a section (or lands there via a nav
-   link with no matching target), the same centered content looks
-   arbitrarily offset. Scroll snapping removes that ambiguity: any scroll
-   that ends near a section boundary settles exactly on it, on every
-   device/input method, so the centering fix is what people actually see.
-   "proximity" (not "mandatory") only pulls in when already close, so it
-   never fights the trackpad/wheel-driven scroll math StepsSection uses
-   for its pinned reveal. */
-html {
-  scroll-snap-type: y proximity;
-}
-
 #root {
-  min-height: 100svh;
+  height: 100%;
 }
 
 img {

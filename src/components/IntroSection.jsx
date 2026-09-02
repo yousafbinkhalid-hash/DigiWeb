@@ -132,43 +132,19 @@ function StatCounter({ stat, active, delay }) {
 /* ---------------------------------------------------------------------- */
 
 export default function IntroSection() {
-  const sectionRef = useRef(null);
   const [headerRef, headerVisible] = useReveal(0.3);
   const [statsRef, statsVisible] = useReveal(0.35);
   const [gridRef, gridVisible] = useReveal(0.2);
 
-  // Continuous parallax tied to scroll position (not just a one-time reveal)
-  useEffect(() => {
-    const node = sectionRef.current;
-    if (!node) return undefined;
-
-    let raf = null;
-
-    const update = () => {
-      raf = null;
-      const rect = node.getBoundingClientRect();
-      const vh = window.innerHeight || 1;
-      // progress: -1 (section below viewport) -> 0 (centered) -> 1 (above viewport)
-      const progress = (vh - rect.top) / (vh + rect.height) - 0.5;
-      node.style.setProperty("--scroll-progress", progress.toFixed(4));
-    };
-
-    const onScroll = () => {
-      if (raf === null) raf = requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
-
   return (
-    <section id="about" ref={sectionRef} className="intro">
+    // The background parallax used to be driven by a scroll-position
+    // effect here; the page no longer scrolls natively (SectionPager pages
+    // between sections via a transform instead), so it's driven by the
+    // --offset custom property SectionPager already sets on this slide's
+    // wrapper — see the .intro__grid/.intro__blob rules in IntroSection.css
+    // — which animates smoothly during every section transition via plain
+    // CSS inheritance, no JS or scroll listener needed.
+    <section id="about" className="intro">
       <div className="intro__blob intro__blob--a" aria-hidden="true" />
       <div className="intro__blob intro__blob--b" aria-hidden="true" />
       <div className="intro__grid" aria-hidden="true" />

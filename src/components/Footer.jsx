@@ -1,3 +1,4 @@
+import { usePager } from "../PagerContext";
 import "./Footer.css";
 
 /* ---------------------------------------------------------------------- */
@@ -70,15 +71,6 @@ const DEFAULT_SOCIALS = [
   { id: "github", icon: IconGithub, label: "GitHub", href: "#" },
 ];
 
-const scrollToHash = (e, href) => {
-  const target = document.querySelector(href);
-  if (target) {
-    e.preventDefault();
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
-  }
-};
-
 /**
  * Footer
  *
@@ -99,10 +91,11 @@ export default function Footer({
   socials = DEFAULT_SOCIALS,
 }) {
   const year = new Date().getFullYear();
+  const { goToId } = usePager();
 
-  const scrollTop = () => {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  const navigate = (e, href) => {
+    e.preventDefault();
+    goToId(href.replace("#", ""));
   };
 
   return (
@@ -120,7 +113,7 @@ export default function Footer({
           <a
             className="footer__cta-link"
             href="#contact"
-            onClick={(e) => scrollToHash(e, "#contact")}
+            onClick={(e) => navigate(e, "#contact")}
           >
             {email}
             <IconArrowRight />
@@ -132,7 +125,7 @@ export default function Footer({
         {/* Columns ---------------------------------------------------- */}
         <div className="footer__grid">
           <div className="footer__col footer__col--brand">
-            <a href="#home" className="footer__brand" onClick={(e) => scrollToHash(e, "#home")}>
+            <a href="#home" className="footer__brand" onClick={(e) => navigate(e, "#home")}>
               <span className="footer__brand-mark" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none">
                   <path
@@ -163,7 +156,7 @@ export default function Footer({
             <ul className="footer__links">
               {companyLinks.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} onClick={(e) => scrollToHash(e, link.href)}>
+                  <a href={link.href} onClick={(e) => navigate(e, link.href)}>
                     {link.label}
                   </a>
                 </li>
@@ -176,7 +169,7 @@ export default function Footer({
             <ul className="footer__links">
               {serviceLinks.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} onClick={(e) => scrollToHash(e, link.href)}>
+                  <a href={link.href} onClick={(e) => navigate(e, link.href)}>
                     {link.label}
                   </a>
                 </li>
@@ -213,7 +206,7 @@ export default function Footer({
             </li>
           </ul>
 
-          <button type="button" className="footer__top" onClick={scrollTop} aria-label="Back to top">
+          <button type="button" className="footer__top" onClick={() => goToId("home")} aria-label="Back to top">
             <IconArrowUp />
           </button>
         </div>

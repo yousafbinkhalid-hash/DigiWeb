@@ -18,11 +18,6 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  /* See the matching note in IntroSection.css — no scroll-margin-top: the
-     fixed navbar overlays the page rather than pushing it down, and this
-     section already reserves nav-h via its own padding-top, so scrolling
-     or snapping here should land the section flush at viewport y=0. */
-  scroll-snap-align: start;
   height: 100vh;
   height: 100dvh;
   display: flex;

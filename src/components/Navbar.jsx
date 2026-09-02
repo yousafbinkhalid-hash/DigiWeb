@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { usePager } from "../PagerContext";
 import "./Navbar.css";
 
 // Ordered to match the actual page flow (Home -> About -> Services ->
@@ -13,39 +14,13 @@ const LINKS = [
 ];
 
 export default function Navbar({ brand = "DigiWeb" }) {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [activeHref, setActiveHref] = useState(LINKS[0].href);
+  const { activeId, goToId } = usePager();
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Scroll-spy: highlight whichever nav link matches the section currently
-  // most visible in the viewport, so the nav reflects where you actually
-  // are on the page instead of staying static.
-  useEffect(() => {
-    const targets = LINKS.map((link) => document.querySelector(link.href)).filter(Boolean);
-    if (!targets.length) return undefined;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting);
-        if (!visible.length) return;
-        const topMost = visible.reduce((best, entry) =>
-          entry.intersectionRatio > best.intersectionRatio ? entry : best
-        );
-        setActiveHref(`#${topMost.target.id}`);
-      },
-      { threshold: [0.35, 0.5, 0.65], rootMargin: "-20% 0px -20% 0px" }
-    );
-
-    targets.forEach((target) => observer.observe(target));
-    return () => observer.disconnect();
-  }, []);
+  // The page no longer scrolls natively (SectionPager pages between
+  // sections instead), so "has the user moved past Hero" is read straight
+  // from which slide is active rather than a window.scrollY listener.
+  const scrolled = activeId !== "home";
 
   // Lock body scroll while the mobile menu is open
   useEffect(() => {
@@ -58,18 +33,8 @@ export default function Navbar({ brand = "DigiWeb" }) {
   const closeMenu = () => setOpen(false);
 
   const handleNavClick = (e, href) => {
-    const target = document.querySelector(href);
-    // Always prevent the default anchor jump: when the target exists we
-    // drive the scroll ourselves (below), and when it doesn't yet exist
-    // (Work/Contact have no section built yet) letting the browser jump
-    // the URL to a dead #hash leaves the address bar pointing at content
-    // that was never scrolled to — confusing, and easy to mistake for a
-    // layout bug. Just close the menu and leave the page where it is.
     e.preventDefault();
-    if (target) {
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
-    }
+    goToId(href.replace("#", ""));
     closeMenu();
   };
 
@@ -91,17 +56,20 @@ export default function Navbar({ brand = "DigiWeb" }) {
         </a>
 
         <nav className="nav__links" aria-label="Primary">
-          {LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={`nav__link ${activeHref === link.href ? "is-active" : ""}`}
-              aria-current={activeHref === link.href ? "true" : undefined}
-              onClick={(e) => handleNavClick(e, link.href)}
-            >
-              {link.label}
-            </a>
-          ))}
+          {LINKS.map((link) => {
+            const isActive = `#${activeId}` === link.href;
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`nav__link ${isActive ? "is-active" : ""}`}
+                aria-current={isActive ? "true" : undefined}
+                onClick={(e) => handleNavClick(e, link.href)}
+              >
+                {link.label}
+              </a>
+            );
+          })}
         </nav>
 
         <div className="nav__actions">
@@ -124,17 +92,20 @@ export default function Navbar({ brand = "DigiWeb" }) {
       </div>
 
       <div className={`nav__mobile ${open ? "is-open" : ""}`}>
-        {LINKS.map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
-            className={`nav__mobile-link ${activeHref === link.href ? "is-active" : ""}`}
-            aria-current={activeHref === link.href ? "true" : undefined}
-            onClick={(e) => handleNavClick(e, link.href)}
-          >
-            {link.label}
-          </a>
-        ))}
+        {LINKS.map((link) => {
+          const isActive = `#${activeId}` === link.href;
+          return (
+            <a
+              key={link.href}
+              href={link.href}
+              className={`nav__mobile-link ${isActive ? "is-active" : ""}`}
+              aria-current={isActive ? "true" : undefined}
+              onClick={(e) => handleNavClick(e, link.href)}
+            >
+              {link.label}
+            </a>
+          );
+        })}
         <a href="#contact" className="nav__mobile-cta" onClick={(e) => handleNavClick(e, "#contact")}>
           Get a Quote
         </a>

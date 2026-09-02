@@ -18,10 +18,6 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  /* No scroll-margin-top: the navbar overlays the page and this section
-     reserves nav-h itself via --pad-y below, so it should snap flush at
-     viewport y=0 — see the matching note in ServicesSection.css. */
-  scroll-snap-align: start;
   height: 100vh;
   height: 100dvh;
   display: flex;
@@ -595,10 +591,18 @@
 
 @media (max-width: 980px) {
   .contact {
-    height: auto;
-    min-height: 100vh;
-    min-height: 100dvh;
+    /* The stacked single-column layout below can still run taller than
+       one viewport on narrow phones. Rather than letting it grow past
+       the slide's fixed 100dvh box (where it would simply be clipped —
+       there's no page scroll to reveal it anymore), it scrolls
+       internally; SectionPager only pages away once it's already
+       scrolled to that edge, the same treatment Footer uses. */
+    height: 100%;
+    max-height: 100vh;
+    max-height: 100dvh;
     display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: clamp(90px, 16vw, 130px) 0 40px;
   }
 
