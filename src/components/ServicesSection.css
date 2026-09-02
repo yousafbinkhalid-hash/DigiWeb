@@ -62,13 +62,22 @@
 /* ---------------------------------------------------------------------- */
 
 .services__inner {
+  /* See the matching note in HeroSection.css — a single --pad-y value
+     drives both padding-top (plus the navbar offset) and padding-bottom,
+     so the content stays exactly centered in the visible area below the
+     navbar at every breakpoint. */
+  --pad-y: 14px;
+
   position: relative;
   z-index: 2;
   width: 100%;
   max-width: 1180px;
   max-height: 100%;
   margin: 0 auto;
-  padding: calc(var(--nav-h) + 8px) clamp(20px, 4vw, 48px) 14px;
+  padding-left: clamp(20px, 4vw, 48px);
+  padding-right: clamp(20px, 4vw, 48px);
+  padding-bottom: var(--pad-y);
+  padding-top: calc(var(--nav-h) + var(--pad-y));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -564,7 +573,7 @@
 
 @media (max-height: 820px) {
   .services__inner {
-    padding-top: calc(var(--nav-h) + 4px);
+    --pad-y: 4px;
   }
 
   .services__eyebrow {

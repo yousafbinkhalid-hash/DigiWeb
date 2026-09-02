@@ -92,14 +92,24 @@
 /* ---------------------------------------------------------------------- */
 
 .hero__inner {
+  /* A single vertical-padding variable drives both the top and bottom
+     padding (top additionally offsets the fixed navbar). Because both
+     sides always derive from the same value, the content stays exactly
+     centered in the visible area below the navbar at every breakpoint —
+     media queries below only ever need to override this one variable
+     instead of keeping two separate calc()s in sync. */
+  --pad-y: clamp(16px, 3vh, 64px);
+
   position: relative;
   z-index: 2;
   width: 100%;
   max-width: 860px;
   max-height: 100%;
   margin: 0 auto;
-  padding: clamp(16px, 3vh, 64px) clamp(20px, 4vw, 64px);
-  padding-top: calc(var(--nav-h) + clamp(10px, 2.6vh, 64px));
+  padding-left: clamp(20px, 4vw, 64px);
+  padding-right: clamp(20px, 4vw, 64px);
+  padding-bottom: var(--pad-y);
+  padding-top: calc(var(--nav-h) + var(--pad-y));
   display: flex;
   justify-content: center;
 }
@@ -279,8 +289,9 @@
 
 @media (max-width: 640px) {
   .hero__inner {
-    padding: clamp(12px, 2.6vh, 20px) 20px;
-    padding-top: calc(var(--nav-h) + clamp(10px, 2.4vh, 36px));
+    --pad-y: clamp(12px, 2.6vh, 20px);
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .hero__headline {
