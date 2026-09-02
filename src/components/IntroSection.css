@@ -17,7 +17,10 @@
   isolation: isolate;
   overflow: hidden;
   scroll-margin-top: var(--nav-h);
-  padding: clamp(72px, 10vw, 132px) 0;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
   background: linear-gradient(180deg, var(--bg-0) 0%, #071022 55%, var(--bg-1) 100%);
   color: var(--text-0);
   font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
@@ -79,8 +82,13 @@
   z-index: 2;
   width: 100%;
   max-width: 1180px;
+  max-height: 100%;
   margin: 0 auto;
-  padding: 0 clamp(20px, 4vw, 48px);
+  padding: calc(var(--nav-h) + 6px) clamp(20px, 4vw, 48px) 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Header ------------------------------------------------------------- */
@@ -123,9 +131,9 @@
 }
 
 .intro__heading {
-  margin: 20px 0 0;
-  font-size: clamp(1.9rem, 3.6vw, 2.6rem);
-  line-height: 1.25;
+  margin: clamp(6px, 1.8vh, 20px) 0 0;
+  font-size: clamp(1.5rem, 3.6vh, 2.6rem);
+  line-height: 1.22;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
@@ -139,10 +147,10 @@
 }
 
 .intro__paragraph {
-  margin: 20px auto 0;
+  margin: clamp(6px, 1.6vh, 20px) auto 0;
   max-width: 60ch;
-  font-size: clamp(0.98rem, 1.2vw, 1.08rem);
-  line-height: 1.75;
+  font-size: clamp(0.86rem, 1.2vw, 1.08rem);
+  line-height: 1.6;
   color: var(--text-1);
 }
 
@@ -151,10 +159,11 @@
 .intro__stats {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(16px, 3vw, 32px);
+  gap: clamp(10px, 2vh, 32px);
   max-width: 920px;
-  margin: clamp(48px, 6vw, 72px) auto 0;
-  padding: clamp(24px, 3vw, 36px) clamp(16px, 3vw, 32px);
+  width: 100%;
+  margin: clamp(14px, 3.4vh, 56px) auto 0;
+  padding: clamp(12px, 2.2vh, 32px) clamp(16px, 3vw, 32px);
   border-radius: 20px;
   background: var(--panel);
   border: 1px solid var(--border);
@@ -178,7 +187,7 @@
 }
 
 .intro__stat-value {
-  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  font-size: clamp(1.25rem, 3.4vh, 2.3rem);
   font-weight: 800;
   letter-spacing: -0.02em;
   background: linear-gradient(120deg, #ffffff, var(--brand-300));
@@ -189,7 +198,7 @@
 }
 
 .intro__stat-label {
-  font-size: 0.82rem;
+  font-size: clamp(0.68rem, 1.6vh, 0.82rem);
   color: var(--text-2);
 }
 
@@ -198,12 +207,13 @@
 .intro__features {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(18px, 2.4vw, 28px);
-  margin-top: clamp(48px, 6vw, 72px);
+  gap: clamp(12px, 2vw, 28px);
+  width: 100%;
+  margin-top: clamp(14px, 3.4vh, 56px);
 }
 
 .intro__card {
-  padding: clamp(24px, 2.6vw, 30px);
+  padding: clamp(14px, 2.4vh, 30px);
   border-radius: 18px;
   background: linear-gradient(165deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
   border: 1px solid var(--border);
@@ -235,13 +245,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 46px;
-  height: 46px;
+  width: clamp(34px, 5vh, 46px);
+  height: clamp(34px, 5vh, 46px);
   border-radius: 12px;
   color: var(--cyan);
   background: rgba(47, 224, 255, 0.1);
   border: 1px solid rgba(47, 224, 255, 0.25);
-  margin-bottom: 18px;
+  margin-bottom: clamp(8px, 1.6vh, 18px);
 }
 
 .intro__card-icon svg {
@@ -250,16 +260,16 @@
 }
 
 .intro__card-title {
-  margin: 0 0 8px;
-  font-size: 1.05rem;
+  margin: 0 0 6px;
+  font-size: clamp(0.88rem, 1.9vh, 1.05rem);
   font-weight: 700;
   color: var(--text-0);
 }
 
 .intro__card-desc {
   margin: 0;
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-size: 0.85rem;
+  line-height: 1.55;
   color: var(--text-1);
 }
 
@@ -289,8 +299,25 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .intro__features {
-    grid-template-columns: 1fr;
+  /* Keep the three feature cards in a single compact row instead of
+     stacking them — stacking triples the section's height, which is what
+     we're trying to avoid by keeping every section to 100vh. Dropping the
+     description keeps each card short and legible at this width. */
+  .intro__card-desc {
+    display: none;
+  }
+
+  .intro__card {
+    text-align: center;
+  }
+
+  .intro__card-icon {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .intro__card-title {
+    margin-bottom: 0;
   }
 }
 
@@ -300,6 +327,58 @@
   }
 
   .intro__stats {
-    gap: 20px 16px;
+    gap: 12px 10px;
+  }
+
+  .intro__features {
+    gap: 8px;
+  }
+
+  .intro__card {
+    padding: 10px 6px;
+  }
+
+  .intro__card-title {
+    font-size: 0.72rem;
+    line-height: 1.25;
+  }
+}
+
+/* Short-viewport compaction — same approach as the steps and services
+   sections: keep every element, just tighten spacing/type until the whole
+   section fits inside 100dvh without clipping. -------------------------- */
+
+@media (max-height: 820px) {
+  .intro__paragraph {
+    display: none;
+  }
+}
+
+@media (max-height: 680px) {
+  .intro__eyebrow {
+    padding: 5px 12px;
+    font-size: 11px;
+  }
+
+  .intro__heading {
+    font-size: clamp(1.3rem, 4.6vh, 1.9rem);
+  }
+
+  .intro__stats {
+    padding: clamp(8px, 1.6vh, 32px) clamp(12px, 3vw, 32px);
+  }
+
+  .intro__card-icon {
+    display: none;
+  }
+}
+
+@media (max-height: 580px) {
+  .intro__stat-label {
+    display: none;
+  }
+
+  .intro__features {
+    display: none;
   }
 }
