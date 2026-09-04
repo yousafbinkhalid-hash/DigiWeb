@@ -3,19 +3,16 @@
    ====================================================================== */
 .hero {
   --bg-0: #050914;
-  --bg-1: #0a1225;
-  --panel: rgba(255, 255, 255, 0.04);
-  --border: rgba(255, 255, 255, 0.1);
-  --border-strong: rgba(255, 255, 255, 0.18);
-  --brand-500: #2f8fff;
+  --panel: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.24);
   --brand-400: #4fb3ff;
   --brand-300: #8fd3ff;
   --cyan: #2fe0ff;
-  --text-0: #f5f8ff;
-  --text-1: #b7c2dd;
-  --text-2: #7c88a8;
+  --text-0: #ffffff;
+  --text-1: #dbe2f2;
+  --text-2: #aab4cc;
   --nav-h: 76px;
-  --media-basis: 56%;
 
   position: relative;
   isolation: isolate;
@@ -29,21 +26,19 @@
      say so itself; Footer and mobile Contact set touch-action: pan-y
      instead, since they're the two that do scroll internally. */
   touch-action: none;
-  display: flex;
-  align-items: stretch;
   background: var(--bg-0);
   color: var(--text-0);
   font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
 /* ---------------------------------------------------------------------- */
-/*  Photo half                                                            */
+/*  Full-bleed photo                                                      */
 /* ---------------------------------------------------------------------- */
 
 .hero__media {
-  position: relative;
-  flex: 0 0 var(--media-basis);
-  height: 100%;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   overflow: hidden;
   background: var(--bg-0);
 }
@@ -60,105 +55,34 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 30% 50%;
+  object-position: 32% 50%;
   animation: mediaReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) both,
-    kenBurns 24s ease-in-out infinite alternate;
+    kenBurns 26s ease-in-out infinite alternate;
   animation-delay: 0s, 1.4s;
 }
 
-/* Soft scrim near the top so the fixed, transparent navbar keeps reading
-   over busy sky/foliage regardless of scroll position. */
-.hero__media-top-fade {
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 34%;
-  background: linear-gradient(180deg, rgba(3, 6, 14, 0.55), transparent);
-  pointer-events: none;
-}
-
-/* Blends the photo's right edge into the dark panel instead of a hard
-   seam between the two halves. */
-.hero__media-fade {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 62%,
-    rgba(5, 9, 20, 0.55) 88%,
-    var(--bg-0) 100%
-  );
-  pointer-events: none;
-}
-
-/* Full-photo dark scrim, used only once the layout stacks on narrow
-   screens (see media query) so the headline stays legible sitting
-   directly on top of the image. */
+/* Crisp-text scrim: dark and dense where the copy sits (left + bottom),
+   opening up toward the top-right so the skyline stays visible. Stacked
+   gradients rather than one flat overlay so the photo still reads as a
+   photo, not a tinted panel. */
 .hero__media-scrim {
   position: absolute;
   inset: 0;
-  opacity: 0;
-  background: linear-gradient(
-    0deg,
-    rgba(3, 6, 14, 0.92) 0%,
-    rgba(3, 6, 14, 0.62) 42%,
-    rgba(3, 6, 14, 0.15) 75%,
-    transparent 100%
-  );
   pointer-events: none;
-}
-
-/* ---------------------------------------------------------------------- */
-/*  Dark panel half + ambient background: grid + rising particles + glow  */
-/* ---------------------------------------------------------------------- */
-
-.hero__panel {
-  position: relative;
-  isolation: isolate;
-  flex: 1 1 auto;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
   background:
-    radial-gradient(1100px 640px at 82% 12%, rgba(47, 143, 255, 0.16), transparent 60%),
-    radial-gradient(900px 520px at 8% 92%, rgba(47, 224, 255, 0.1), transparent 60%),
-    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 100%);
-}
-
-.hero__grid {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 44px 44px;
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 30% 40%, #000 40%, transparent 85%);
-  mask-image: radial-gradient(ellipse 80% 60% at 30% 40%, #000 40%, transparent 85%);
-  opacity: 0.6;
-}
-
-.hero__particles {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background-image: repeating-linear-gradient(
-    90deg,
-    rgba(79, 179, 255, 0.35) 0,
-    rgba(79, 179, 255, 0.35) 1px,
-    transparent 1px,
-    transparent 64px
-  );
-  background-position: 0 100%;
-  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 55%);
-  mask-image: linear-gradient(to top, #000 0%, transparent 55%);
-  animation: rise 6s linear infinite;
-  opacity: 0.5;
-}
-
-@keyframes rise {
-  0% { background-position-y: 100%; }
-  100% { background-position-y: 40%; }
+    linear-gradient(100deg,
+      rgba(2, 5, 12, 0.94) 0%,
+      rgba(2, 5, 12, 0.86) 22%,
+      rgba(2, 5, 12, 0.55) 42%,
+      rgba(2, 5, 12, 0.18) 62%,
+      transparent 78%),
+    linear-gradient(0deg,
+      rgba(2, 5, 12, 0.7) 0%,
+      rgba(2, 5, 12, 0.28) 28%,
+      transparent 52%),
+    linear-gradient(180deg,
+      rgba(2, 5, 12, 0.55) 0%,
+      transparent 20%);
 }
 
 .hero__glow {
@@ -168,15 +92,16 @@
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.35s ease;
+  mix-blend-mode: screen;
   background: radial-gradient(
-    420px circle at var(--glow-x, 50%) var(--glow-y, 50%),
-    rgba(79, 179, 255, 0.16),
+    460px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+    rgba(79, 179, 255, 0.14),
     transparent 70%
   );
 }
 
 /* ---------------------------------------------------------------------- */
-/*  Layout — content anchored to the left of the dark panel                */
+/*  Layout — content overlaid on the photo, anchored left                 */
 /* ---------------------------------------------------------------------- */
 
 .hero__inner {
@@ -185,14 +110,15 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 560px;
-  max-height: 100%;
+  height: 100%;
+  max-width: 680px;
   margin: 0;
-  padding-left: clamp(24px, 5vw, 64px);
+  padding-left: clamp(24px, 6vw, 88px);
   padding-right: clamp(20px, 4vw, 48px);
   padding-bottom: var(--pad-y);
   padding-top: calc(var(--nav-h) + var(--pad-y));
   display: flex;
+  align-items: center;
 }
 
 .hero__content {
@@ -202,69 +128,38 @@
   text-align: left;
 }
 
-.hero__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  font-size: 12.5px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--brand-300);
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  backdrop-filter: blur(6px);
-  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.05s;
-}
-
-.hero__eyebrow-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--cyan);
-  box-shadow: 0 0 0 3px rgba(47, 224, 255, 0.2);
-  animation: pulseDot 1.8s ease-in-out infinite;
-}
-
 .hero__headline {
-  margin: clamp(10px, 2.2vh, 20px) 0 0;
-  font-size: clamp(1.8rem, 5.6vh, 3.4rem);
+  margin: 0;
+  font-size: clamp(1.9rem, 5.8vh, 3.6rem);
   line-height: 1.12;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.02em;
+  color: var(--text-0);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
 }
 
 .hero__headline-line {
   display: block;
-  background: linear-gradient(100deg, #ffffff 30%, var(--brand-300) 65%, var(--cyan) 90%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
   animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: calc(0.15s + var(--i, 0) * 0.1s);
 }
 
-.hero__subheadline {
-  margin: clamp(8px, 1.8vh, 20px) 0 0;
-  max-width: 46ch;
-  font-size: clamp(0.9rem, 1.3vw, 1.1rem);
-  line-height: 1.6;
-  color: var(--text-1);
-  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.4s;
+.hero__headline-line:last-child {
+  background: linear-gradient(100deg, #ffffff 30%, var(--brand-300) 65%, var(--cyan) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-.hero__ctas {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 14px;
-  margin-top: clamp(16px, 2.8vh, 32px);
+.hero__subheadline {
+  margin: clamp(8px, 1.8vh, 20px) 0 0;
+  max-width: 48ch;
+  font-size: clamp(0.92rem, 1.3vw, 1.12rem);
+  line-height: 1.6;
+  color: var(--text-1);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
   animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.5s;
+  animation-delay: 0.4s;
 }
 
 .hero__btn {
@@ -276,6 +171,9 @@
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
+  margin-top: clamp(18px, 3vh, 34px);
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.5s;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
   will-change: transform;
 }
@@ -303,46 +201,86 @@
 
 .hero__btn--secondary {
   color: var(--text-0);
-  background: var(--panel);
+  background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--border-strong);
   backdrop-filter: blur(6px);
 }
 
 .hero__btn--secondary:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.4);
   transform: translateY(-2px);
 }
 
-.hero__stats {
-  display: flex;
-  justify-content: flex-start;
-  gap: clamp(20px, 4vw, 40px);
-  margin-top: clamp(18px, 3.4vh, 48px);
-  padding-top: clamp(14px, 2vh, 28px);
-  border-top: 1px solid var(--border);
-  width: 100%;
-  max-width: 480px;
-  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.6s;
-}
+/* ---------------------------------------------------------------------- */
+/*  Scroll assist                                                         */
+/* ---------------------------------------------------------------------- */
 
-.hero__stat {
+.hero__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(18px, 3.6vh, 34px);
+  z-index: 3;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
+  align-items: center;
+  gap: 8px;
+  padding: 4px;
+  border: none;
+  background: none;
+  color: var(--text-1);
+  cursor: pointer;
+  transform: translateX(-50%);
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.75s;
 }
 
-.hero__stat strong {
-  font-size: 1.4rem;
-  font-weight: 700;
+.hero__scroll-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+  opacity: 0.85;
+  transition: opacity 0.25s ease, color 0.25s ease;
+}
+
+.hero__scroll-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  background: rgba(2, 5, 12, 0.35);
+  backdrop-filter: blur(6px);
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  animation: scrollBob 2.2s ease-in-out infinite;
+}
+
+.hero__scroll-track svg {
+  width: 16px;
+  height: 16px;
+}
+
+.hero__scroll:hover .hero__scroll-label,
+.hero__scroll:focus-visible .hero__scroll-label {
+  opacity: 1;
   color: var(--text-0);
 }
 
-.hero__stat span {
-  font-size: 0.8rem;
-  color: var(--text-2);
+.hero__scroll:hover .hero__scroll-track,
+.hero__scroll:focus-visible .hero__scroll-track {
+  border-color: var(--cyan);
+  background: rgba(47, 224, 255, 0.12);
+  transform: scale(1.08);
+}
+
+.hero__scroll:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 4px;
+  border-radius: 12px;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -361,12 +299,12 @@
 
 @keyframes kenBurns {
   from { transform: scale(1.06) translate3d(0, 0, 0); }
-  to { transform: scale(1.14) translate3d(-1%, -1%, 0); }
+  to { transform: scale(1.15) translate3d(-1.2%, -1%, 0); }
 }
 
-@keyframes pulseDot {
-  0%, 100% { box-shadow: 0 0 0 3px rgba(47, 224, 255, 0.2); }
-  50% { box-shadow: 0 0 0 6px rgba(47, 224, 255, 0.08); }
+@keyframes scrollBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -387,57 +325,53 @@
   }
 }
 
-/* Below this width the split layout gets cramped — the photo collapses
-   into a full-bleed background with a dark scrim, and the copy sits
-   directly on top of it instead of in its own panel. */
 @media (max-width: 780px) {
-  .hero {
-    display: block;
-  }
-
-  .hero__media {
-    position: absolute;
-    inset: 0;
-    flex-basis: auto;
-  }
-
-  .hero__media-fade {
-    display: none;
+  .hero__image {
+    /* On a narrow crop there's no room either side of the trunk for the
+       skyline to read — recentring keeps both tree and city in frame. */
+    object-position: 40% 50%;
   }
 
   .hero__media-scrim {
-    opacity: 1;
-  }
-
-  .hero__panel {
-    position: relative;
-    z-index: 1;
-    height: 100%;
-    background: none;
-  }
-
-  .hero__grid,
-  .hero__particles {
-    display: none;
+    background:
+      linear-gradient(0deg,
+        rgba(2, 5, 12, 0.95) 0%,
+        rgba(2, 5, 12, 0.7) 38%,
+        rgba(2, 5, 12, 0.22) 68%,
+        transparent 100%),
+      linear-gradient(180deg,
+        rgba(2, 5, 12, 0.6) 0%,
+        transparent 22%);
   }
 
   .hero__inner {
     max-width: 620px;
     padding-left: 20px;
     padding-right: 20px;
+    align-items: flex-end;
     --pad-y: clamp(12px, 2.6vh, 20px);
+    /* Leaves clearance above the scroll-assist button, which is pinned to
+       the bottom of the section on every breakpoint. */
+    padding-bottom: calc(var(--pad-y) + 52px);
   }
 
   .hero__headline {
     font-size: clamp(1.6rem, 8vh, 2.6rem);
   }
 
-  .hero__stats {
-    gap: 18px;
+  /* The CTA is left-aligned and can run nearly full-width on a narrow
+     screen, right where a centered scroll hint would sit — tucking it
+     into the bottom-right corner as an icon-only button keeps the two
+     from ever colliding regardless of button label length. */
+  .hero__scroll {
+    left: auto;
+    right: clamp(16px, 4vw, 28px);
+    bottom: clamp(14px, 2.6vh, 24px);
+    transform: none;
   }
 
-  .hero__stat strong {
-    font-size: 1.15rem;
+  .hero__scroll-label {
+    display: none;
   }
 }
 
@@ -451,16 +385,11 @@
 }
 
 @media (max-height: 620px) {
-  .hero__eyebrow {
-    padding: 5px 12px;
-    font-size: 11px;
-  }
-
   .hero__headline {
     font-size: clamp(1.4rem, 7vh, 2.1rem);
   }
 
-  .hero__stats {
+  .hero__scroll {
     display: none;
   }
 }
