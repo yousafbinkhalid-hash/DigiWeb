@@ -86,10 +86,10 @@
 }
 
 .pager__dot.is-active {
-  background: linear-gradient(135deg, #4fb3ff, #2fe0ff);
+  background: linear-gradient(135deg, #36D52B, #6EFF5A);
   border-color: transparent;
   transform: scale(1.3);
-  box-shadow: 0 0 0 3px rgba(47, 224, 255, 0.18);
+  box-shadow: 0 0 0 3px rgba(110, 255, 90, 0.18);
 }
 
 @media (max-width: 640px) {

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { usePager } from "../PagerContext";
 import heroImage from "../assets/hero-tree-city.jpg";
+import heroImageMobile from "../assets/hero-tree-city-mobile.jpg";
 import "./HeroSection.css";
 
 /**
@@ -16,8 +17,8 @@ import "./HeroSection.css";
  *  - primaryCta    {{label, href, onClick}}
  */
 export default function HeroSection({
-  headline = "We Build Solutions\nThat Grow Your Business",
-  subheadline = "From first sketch to launch and beyond.",
+  headline = "We Build Solutions.\nYou Build an Empire.",
+  subheadline = "From first sketch to full-scale dominance — we build what lasts.",
   primaryCta = { label: "Start a Project", href: "#contact" },
 }) {
   const sectionRef = useRef(null);
@@ -78,7 +79,10 @@ export default function HeroSection({
       {/* Full-bleed photo — silhouetted tree framing a distant skyline */}
       <div className="hero__media">
         <div ref={mediaInnerRef} className="hero__media-inner">
-          <img className="hero__image" src={heroImage} alt="A tree overlooking a distant city skyline at dawn" />
+          <picture>
+            <source media="(max-width: 780px)" srcSet={heroImageMobile} />
+            <img className="hero__image" src={heroImage} alt="A tree overlooking a distant city skyline at dawn" />
+          </picture>
         </div>
         <div className="hero__media-scrim" aria-hidden="true" />
         <div ref={glowRef} className="hero__glow" aria-hidden="true" />

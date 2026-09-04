@@ -7,9 +7,9 @@
   --panel: rgba(255, 255, 255, 0.04);
   --border: rgba(255, 255, 255, 0.1);
   --border-strong: rgba(255, 255, 255, 0.2);
-  --brand-400: #4fb3ff;
-  --brand-300: #8fd3ff;
-  --cyan: #2fe0ff;
+  --brand-400: #36D52B;
+  --brand-300: #8AE682;
+  --cyan: #6EFF5A;
   --text-0: #f5f8ff;
   --text-1: #b7c2dd;
   --text-2: #7c88a8;
@@ -58,7 +58,7 @@
   white-space: nowrap;
   color: transparent;
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, rgba(79, 179, 255, 0.08), rgba(79, 179, 255, 0));
+  background: linear-gradient(180deg, rgba(54, 213, 43, 0.08), rgba(54, 213, 43, 0));
   -webkit-background-clip: text;
   background-clip: text;
   pointer-events: none;
@@ -122,7 +122,7 @@
   color: #06101f;
   text-decoration: none;
   background: linear-gradient(120deg, var(--brand-400), var(--cyan));
-  box-shadow: 0 16px 36px -12px rgba(47, 143, 255, 0.6);
+  box-shadow: 0 16px 36px -12px rgba(30, 170, 22, 0.6);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   white-space: nowrap;
 }
@@ -135,7 +135,7 @@
 
 .footer__cta-link:hover {
   transform: translateY(-3px);
-  box-shadow: 0 22px 44px -14px rgba(47, 143, 255, 0.75);
+  box-shadow: 0 22px 44px -14px rgba(30, 170, 22, 0.75);
 }
 
 .footer__cta-link:hover svg {
@@ -196,29 +196,14 @@
 .footer__brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-size: 1.3rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  color: var(--text-0);
   text-decoration: none;
+  color: var(--text-0);
 }
 
-.footer__brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  color: #06101f;
-  background: linear-gradient(135deg, var(--brand-400), var(--cyan));
-  box-shadow: 0 6px 18px -6px rgba(47, 143, 255, 0.7);
-}
-
-.footer__brand-mark svg {
-  width: 60%;
-  height: 60%;
+.footer__logo {
+  height: 32px;
+  width: auto;
+  display: block;
 }
 
 .footer__tagline {
@@ -255,8 +240,8 @@
 
 .footer__social:hover {
   color: var(--text-0);
-  border-color: rgba(47, 224, 255, 0.4);
-  background: rgba(47, 224, 255, 0.1);
+  border-color: rgba(110, 255, 90, 0.4);
+  background: rgba(110, 255, 90, 0.1);
   transform: translateY(-2px);
 }
 
@@ -317,8 +302,8 @@
 }
 
 .footer__top:hover {
-  background: rgba(47, 224, 255, 0.12);
-  border-color: rgba(47, 224, 255, 0.4);
+  background: rgba(110, 255, 90, 0.12);
+  border-color: rgba(110, 255, 90, 0.4);
   transform: translateY(-3px);
 }
 

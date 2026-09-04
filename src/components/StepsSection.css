@@ -4,9 +4,9 @@
   --panel: rgba(255, 255, 255, 0.04);
   --border: rgba(255, 255, 255, 0.1);
   --border-strong: rgba(255, 255, 255, 0.22);
-  --brand-400: #4fb3ff;
-  --brand-300: #8fd3ff;
-  --cyan: #2fe0ff;
+  --brand-400: #36D52B;
+  --brand-300: #8AE682;
+  --cyan: #6EFF5A;
   --text-0: #f5f8ff;
   --text-1: #b7c2dd;
   --text-2: #7c88a8;
@@ -90,7 +90,7 @@
   height: 6px;
   border-radius: 50%;
   background: var(--cyan);
-  box-shadow: 0 0 0 3px rgba(47, 224, 255, 0.2);
+  box-shadow: 0 0 0 3px rgba(110, 255, 90, 0.2);
 }
 
 .steps__heading {
@@ -244,11 +244,11 @@
   height: clamp(52px, 5.6vw, 68px);
   border-radius: 18px;
   color: var(--cyan);
-  background: linear-gradient(160deg, rgba(47, 224, 255, 0.18), rgba(47, 143, 255, 0.06));
-  border: 1px solid rgba(47, 224, 255, 0.35);
+  background: linear-gradient(160deg, rgba(110, 255, 90, 0.18), rgba(30, 170, 22, 0.06));
+  border: 1px solid rgba(110, 255, 90, 0.35);
   box-shadow:
-    0 14px 30px -12px rgba(47, 143, 255, 0.6),
-    0 0 26px -6px rgba(47, 224, 255, 0.4),
+    0 14px 30px -12px rgba(30, 170, 22, 0.6),
+    0 0 26px -6px rgba(110, 255, 90, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
   opacity: calc(0.05 + var(--p) * 0.95);
   transform: scale(calc((0.6 + var(--p) * 0.4) * var(--hover-boost)));
@@ -261,10 +261,10 @@
 
 .steps__item.is-current .steps__icon,
 .steps__item.is-done .steps__icon {
-  border-color: rgba(47, 224, 255, 0.55);
+  border-color: rgba(110, 255, 90, 0.55);
   box-shadow:
-    0 16px 34px -12px rgba(47, 143, 255, 0.7),
-    0 0 32px -4px rgba(47, 224, 255, 0.55),
+    0 16px 34px -12px rgba(30, 170, 22, 0.7),
+    0 0 32px -4px rgba(110, 255, 90, 0.55),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
@@ -311,13 +311,13 @@
   color: #06101f;
   border-color: transparent;
   background: linear-gradient(135deg, var(--brand-400), var(--cyan));
-  box-shadow: 0 0 0 5px rgba(47, 179, 255, 0.16), 0 0 22px -4px rgba(47, 179, 255, 0.7);
+  box-shadow: 0 0 0 5px rgba(54, 213, 43, 0.16), 0 0 22px -4px rgba(54, 213, 43, 0.7);
 }
 
 .steps__item.is-done .steps__number {
   color: var(--brand-300);
-  border-color: rgba(79, 179, 255, 0.4);
-  background: rgba(47, 143, 255, 0.1);
+  border-color: rgba(54, 213, 43, 0.4);
+  background: rgba(30, 170, 22, 0.1);
 }
 
 .steps__item.is-done .steps__title {

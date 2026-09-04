@@ -4,9 +4,9 @@
   --panel: rgba(255, 255, 255, 0.04);
   --border: rgba(255, 255, 255, 0.1);
   --border-strong: rgba(255, 255, 255, 0.18);
-  --brand-400: #4fb3ff;
-  --brand-300: #8fd3ff;
-  --cyan: #2fe0ff;
+  --brand-400: #36D52B;
+  --brand-300: #8AE682;
+  --cyan: #6EFF5A;
   --text-0: #f5f8ff;
   --text-1: #b7c2dd;
   --text-2: #7c88a8;
@@ -61,7 +61,7 @@
   height: 42vw;
   max-width: 520px;
   max-height: 520px;
-  background: radial-gradient(circle, rgba(47, 143, 255, 0.22), transparent 70%);
+  background: radial-gradient(circle, rgba(30, 170, 22, 0.22), transparent 70%);
   transform: translateY(calc(var(--offset, 0) * 70px));
 }
 
@@ -72,7 +72,7 @@
   height: 36vw;
   max-width: 460px;
   max-height: 460px;
-  background: radial-gradient(circle, rgba(47, 224, 255, 0.16), transparent 70%);
+  background: radial-gradient(circle, rgba(110, 255, 90, 0.16), transparent 70%);
   transform: translateY(calc(var(--offset, 0) * -90px));
 }
 
@@ -139,7 +139,7 @@
   height: 6px;
   border-radius: 50%;
   background: var(--cyan);
-  box-shadow: 0 0 0 3px rgba(47, 224, 255, 0.2);
+  box-shadow: 0 0 0 3px rgba(110, 255, 90, 0.2);
 }
 
 .intro__heading {
@@ -245,7 +245,7 @@
 
 .intro__card:hover {
   border-color: var(--border-strong);
-  box-shadow: 0 20px 40px -22px rgba(47, 143, 255, 0.45);
+  box-shadow: 0 20px 40px -22px rgba(30, 170, 22, 0.45);
   transform: translateY(-4px);
 }
 
@@ -261,8 +261,8 @@
   height: clamp(34px, 5vh, 46px);
   border-radius: 12px;
   color: var(--cyan);
-  background: rgba(47, 224, 255, 0.1);
-  border: 1px solid rgba(47, 224, 255, 0.25);
+  background: rgba(110, 255, 90, 0.1);
+  border: 1px solid rgba(110, 255, 90, 0.25);
   margin-bottom: clamp(8px, 1.6vh, 18px);
 }
 

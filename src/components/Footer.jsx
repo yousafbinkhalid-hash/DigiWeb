@@ -1,4 +1,5 @@
 import { usePager } from "../PagerContext";
+import logo from "../assets/logo.png";
 import "./Footer.css";
 
 /* ---------------------------------------------------------------------- */
@@ -126,17 +127,7 @@ export default function Footer({
         <div className="footer__grid">
           <div className="footer__col footer__col--brand">
             <a href="#home" className="footer__brand" onClick={(e) => navigate(e, "#home")}>
-              <span className="footer__brand-mark" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M6 5h4.6C15.7 5 19 8.4 19 12.5S15.7 20 10.6 20H6V5Z"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </span>
-              {brand}
+              <img className="footer__logo" src={logo} alt={brand} />
             </a>
             <p className="footer__tagline">{tagline}</p>
             <div className="footer__socials">

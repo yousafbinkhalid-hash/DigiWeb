@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { usePager } from "../PagerContext";
+import logo from "../assets/logo.png";
 import "./Navbar.css";
 
 // Ordered to match the actual page flow (Home -> About -> Services ->
@@ -42,17 +43,7 @@ export default function Navbar({ brand = "DigiWeb" }) {
     <header className={`nav ${scrolled ? "is-scrolled" : ""} ${open ? "menu-open" : ""}`}>
       <div className="nav__inner">
         <a href="#home" className="nav__brand" onClick={(e) => handleNavClick(e, "#home")}>
-          <span className="nav__brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path
-                d="M6 5h4.6C15.7 5 19 8.4 19 12.5S15.7 20 10.6 20H6V5Z"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-          <span className="nav__brand-name">{brand}</span>
+          <img className="nav__logo" src={logo} alt={brand} />
         </a>
 
         <nav className="nav__links" aria-label="Primary">

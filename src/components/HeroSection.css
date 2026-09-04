@@ -6,9 +6,9 @@
   --panel: rgba(255, 255, 255, 0.06);
   --border: rgba(255, 255, 255, 0.14);
   --border-strong: rgba(255, 255, 255, 0.24);
-  --brand-400: #4fb3ff;
-  --brand-300: #8fd3ff;
-  --cyan: #2fe0ff;
+  --brand-400: #36D52B;
+  --brand-300: #8AE682;
+  --cyan: #6EFF5A;
   --text-0: #ffffff;
   --text-1: #dbe2f2;
   --text-2: #aab4cc;
@@ -49,6 +49,12 @@
   transform: translate3d(var(--tilt-x, 0px), var(--tilt-y, 0px), 0);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
+}
+
+.hero__media-inner picture {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .hero__image {
@@ -95,7 +101,7 @@
   mix-blend-mode: screen;
   background: radial-gradient(
     460px circle at var(--glow-x, 50%) var(--glow-y, 50%),
-    rgba(79, 179, 255, 0.14),
+    rgba(54, 213, 43, 0.14),
     transparent 70%
   );
 }
@@ -166,10 +172,11 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 13px 24px;
-  border-radius: 12px;
+  padding: 13px 26px;
+  border-radius: 999px;
   font-size: 0.95rem;
   font-weight: 600;
+  letter-spacing: 0.01em;
   text-decoration: none;
   margin-top: clamp(18px, 3vh, 34px);
   animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -184,32 +191,23 @@
   transition: transform 0.25s ease;
 }
 
+/* Border-only — no fill, so the photo keeps doing the work and the CTA
+   reads as a quiet invitation rather than a loud button. */
 .hero__btn--primary {
-  color: #06101f;
-  background: linear-gradient(120deg, var(--brand-400), var(--cyan));
-  box-shadow: 0 10px 30px -8px rgba(47, 143, 255, 0.55);
+  color: var(--text-0);
+  background: transparent;
+  border: 1.5px solid var(--brand-400);
+  backdrop-filter: blur(4px);
 }
 
 .hero__btn--primary:hover {
+  background: rgba(54, 213, 43, 0.14);
+  border-color: var(--cyan);
   transform: translateY(-2px);
-  box-shadow: 0 16px 36px -10px rgba(47, 143, 255, 0.7);
 }
 
 .hero__btn--primary:hover svg {
   transform: translateX(3px);
-}
-
-.hero__btn--secondary {
-  color: var(--text-0);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--border-strong);
-  backdrop-filter: blur(6px);
-}
-
-.hero__btn--secondary:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-2px);
 }
 
 /* ---------------------------------------------------------------------- */
@@ -273,7 +271,7 @@
 .hero__scroll:hover .hero__scroll-track,
 .hero__scroll:focus-visible .hero__scroll-track {
   border-color: var(--cyan);
-  background: rgba(47, 224, 255, 0.12);
+  background: rgba(110, 255, 90, 0.12);
   transform: scale(1.08);
 }
 
@@ -327,9 +325,11 @@
 
 @media (max-width: 780px) {
   .hero__image {
-    /* On a narrow crop there's no room either side of the trunk for the
-       skyline to read — recentring keeps both tree and city in frame. */
-    object-position: 40% 50%;
+    /* The mobile source is its own portrait crop (not a resize of the
+       desktop photo), framed with the canopy and skyline already
+       centred — a small vertical bias keeps the grass from eating too
+       much of the frame on very tall phones. */
+    object-position: 50% 38%;
   }
 
   .hero__media-scrim {
@@ -355,8 +355,25 @@
     padding-bottom: calc(var(--pad-y) + 52px);
   }
 
+  /* Minimal type on small screens: lighter weight, tighter tracking,
+     quieter shadow — reads as calm and editorial instead of shouting. */
   .hero__headline {
-    font-size: clamp(1.6rem, 8vh, 2.6rem);
+    font-size: clamp(1.5rem, 6.4vh, 2.3rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-shadow: 0 1px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  .hero__subheadline {
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.55;
+  }
+
+  .hero__btn {
+    padding: 11px 22px;
+    font-size: 0.85rem;
+    font-weight: 500;
   }
 
   /* The CTA is left-aligned and can run nearly full-width on a narrow

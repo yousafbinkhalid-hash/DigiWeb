@@ -2,9 +2,9 @@
   --nav-h: 76px;
   --border: rgba(255, 255, 255, 0.1);
   --border-strong: rgba(255, 255, 255, 0.18);
-  --brand-400: #4fb3ff;
-  --brand-300: #8fd3ff;
-  --cyan: #2fe0ff;
+  --brand-400: #36D52B;
+  --brand-300: #8AE682;
+  --cyan: #6EFF5A;
   --text-0: #f5f8ff;
   --text-1: #b7c2dd;
 
@@ -51,33 +51,15 @@
 .nav__brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
   text-decoration: none;
   color: var(--text-0);
   flex-shrink: 0;
 }
 
-.nav__brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  color: #06101f;
-  background: linear-gradient(135deg, var(--brand-400), var(--cyan));
-  box-shadow: 0 6px 18px -6px rgba(47, 143, 255, 0.7);
-}
-
-.nav__brand-mark svg {
-  width: 60%;
-  height: 60%;
-}
-
-.nav__brand-name {
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+.nav__logo {
+  height: 26px;
+  width: auto;
+  display: block;
 }
 
 /* Desktop links ------------------------------------------------------ */
@@ -148,14 +130,14 @@
   color: #06101f;
   text-decoration: none;
   background: linear-gradient(120deg, var(--brand-400), var(--cyan));
-  box-shadow: 0 8px 22px -8px rgba(47, 143, 255, 0.6);
+  box-shadow: 0 8px 22px -8px rgba(30, 170, 22, 0.6);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   white-space: nowrap;
 }
 
 .nav__cta:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 28px -10px rgba(47, 143, 255, 0.75);
+  box-shadow: 0 14px 28px -10px rgba(30, 170, 22, 0.75);
 }
 
 /* Hamburger ----------------------------------------------------------- */
@@ -275,7 +257,7 @@
     --nav-h: 64px;
   }
 
-  .nav__brand-name {
-    font-size: 1.02rem;
+  .nav__logo {
+    height: 22px;
   }
 }

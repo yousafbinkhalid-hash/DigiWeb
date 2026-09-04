@@ -7,9 +7,9 @@
   --panel: rgba(255, 255, 255, 0.04);
   --border: rgba(255, 255, 255, 0.1);
   --border-strong: rgba(255, 255, 255, 0.18);
-  --brand-400: #4fb3ff;
-  --brand-300: #8fd3ff;
-  --cyan: #2fe0ff;
+  --brand-400: #36D52B;
+  --brand-300: #8AE682;
+  --cyan: #6EFF5A;
   --text-0: #f5f8ff;
   --text-1: #b7c2dd;
   --text-2: #7c88a8;
@@ -29,7 +29,7 @@
   display: flex;
   align-items: center;
   background:
-    radial-gradient(1000px 560px at 85% 10%, rgba(47, 143, 255, 0.14), transparent 60%),
+    radial-gradient(1000px 560px at 85% 10%, rgba(30, 170, 22, 0.14), transparent 60%),
     linear-gradient(180deg, var(--bg-0) 0%, #071022 55%, var(--bg-1) 100%);
   color: var(--text-0);
   font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
@@ -63,7 +63,7 @@
   height: 40vw;
   max-width: 480px;
   max-height: 480px;
-  background: radial-gradient(circle, rgba(47, 224, 255, 0.16), transparent 70%);
+  background: radial-gradient(circle, rgba(110, 255, 90, 0.16), transparent 70%);
 }
 
 .contact__blob--b {
@@ -73,7 +73,7 @@
   height: 34vw;
   max-width: 420px;
   max-height: 420px;
-  background: radial-gradient(circle, rgba(47, 143, 255, 0.16), transparent 70%);
+  background: radial-gradient(circle, rgba(30, 170, 22, 0.16), transparent 70%);
 }
 
 .contact__glow {
@@ -85,7 +85,7 @@
   transition: opacity 0.35s ease;
   background: radial-gradient(
     460px circle at var(--glow-x, 50%) var(--glow-y, 50%),
-    rgba(79, 179, 255, 0.12),
+    rgba(54, 213, 43, 0.12),
     transparent 70%
   );
 }
@@ -151,7 +151,7 @@
   height: 6px;
   border-radius: 50%;
   background: var(--cyan);
-  box-shadow: 0 0 0 3px rgba(47, 224, 255, 0.2);
+  box-shadow: 0 0 0 3px rgba(110, 255, 90, 0.2);
   animation: contactPulseDot 1.8s ease-in-out infinite;
 }
 
@@ -242,8 +242,8 @@
   height: 42px;
   border-radius: 12px;
   color: var(--cyan);
-  background: rgba(47, 224, 255, 0.1);
-  border: 1px solid rgba(47, 224, 255, 0.25);
+  background: rgba(110, 255, 90, 0.1);
+  border: 1px solid rgba(110, 255, 90, 0.25);
 }
 
 .contact__row-icon svg {
@@ -328,8 +328,8 @@
 
 .contact__social:hover {
   color: var(--text-0);
-  border-color: rgba(47, 224, 255, 0.4);
-  background: rgba(47, 224, 255, 0.1);
+  border-color: rgba(110, 255, 90, 0.4);
+  background: rgba(110, 255, 90, 0.1);
   transform: translateY(-2px);
 }
 
@@ -432,8 +432,8 @@
 .contact__field input:focus,
 .contact__field textarea:focus {
   border-color: var(--brand-400);
-  background: rgba(79, 179, 255, 0.06);
-  box-shadow: 0 0 0 4px rgba(79, 179, 255, 0.14);
+  background: rgba(54, 213, 43, 0.06);
+  box-shadow: 0 0 0 4px rgba(54, 213, 43, 0.14);
 }
 
 .contact__field.has-error input,
@@ -460,7 +460,7 @@
   font-weight: 700;
   color: #06101f;
   background: linear-gradient(120deg, var(--brand-400), var(--cyan));
-  box-shadow: 0 10px 30px -8px rgba(47, 143, 255, 0.55);
+  box-shadow: 0 10px 30px -8px rgba(30, 170, 22, 0.55);
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
 }
@@ -473,7 +473,7 @@
 
 .contact__submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 16px 36px -10px rgba(47, 143, 255, 0.7);
+  box-shadow: 0 16px 36px -10px rgba(30, 170, 22, 0.7);
 }
 
 .contact__submit:hover:not(:disabled) svg {
@@ -563,8 +563,8 @@
 /* ---------------------------------------------------------------------- */
 
 @keyframes contactPulseDot {
-  0%, 100% { box-shadow: 0 0 0 3px rgba(47, 224, 255, 0.2); }
-  50% { box-shadow: 0 0 0 6px rgba(47, 224, 255, 0.08); }
+  0%, 100% { box-shadow: 0 0 0 3px rgba(110, 255, 90, 0.2); }
+  50% { box-shadow: 0 0 0 6px rgba(110, 255, 90, 0.08); }
 }
 
 @keyframes contactSpin {
