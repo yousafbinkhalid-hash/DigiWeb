@@ -15,6 +15,7 @@
   --text-1: #b7c2dd;
   --text-2: #7c88a8;
   --nav-h: 76px;
+  --media-basis: 56%;
 
   position: relative;
   isolation: isolate;
@@ -29,18 +30,100 @@
      instead, since they're the two that do scroll internally. */
   touch-action: none;
   display: flex;
-  align-items: center;
-  background:
-    radial-gradient(1100px 640px at 82% 12%, rgba(47, 143, 255, 0.16), transparent 60%),
-    radial-gradient(900px 520px at 8% 92%, rgba(47, 224, 255, 0.1), transparent 60%),
-    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 100%);
+  align-items: stretch;
+  background: var(--bg-0);
   color: var(--text-0);
   font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
 /* ---------------------------------------------------------------------- */
-/*  Ambient background: grid + rising particles + cursor glow             */
+/*  Photo half                                                            */
 /* ---------------------------------------------------------------------- */
+
+.hero__media {
+  position: relative;
+  flex: 0 0 var(--media-basis);
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-0);
+}
+
+.hero__media-inner {
+  position: absolute;
+  inset: -20px;
+  transform: translate3d(var(--tilt-x, 0px), var(--tilt-y, 0px), 0);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.hero__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 30% 50%;
+  animation: mediaReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) both,
+    kenBurns 24s ease-in-out infinite alternate;
+  animation-delay: 0s, 1.4s;
+}
+
+/* Soft scrim near the top so the fixed, transparent navbar keeps reading
+   over busy sky/foliage regardless of scroll position. */
+.hero__media-top-fade {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 34%;
+  background: linear-gradient(180deg, rgba(3, 6, 14, 0.55), transparent);
+  pointer-events: none;
+}
+
+/* Blends the photo's right edge into the dark panel instead of a hard
+   seam between the two halves. */
+.hero__media-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 62%,
+    rgba(5, 9, 20, 0.55) 88%,
+    var(--bg-0) 100%
+  );
+  pointer-events: none;
+}
+
+/* Full-photo dark scrim, used only once the layout stacks on narrow
+   screens (see media query) so the headline stays legible sitting
+   directly on top of the image. */
+.hero__media-scrim {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(
+    0deg,
+    rgba(3, 6, 14, 0.92) 0%,
+    rgba(3, 6, 14, 0.62) 42%,
+    rgba(3, 6, 14, 0.15) 75%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------- */
+/*  Dark panel half + ambient background: grid + rising particles + glow  */
+/* ---------------------------------------------------------------------- */
+
+.hero__panel {
+  position: relative;
+  isolation: isolate;
+  flex: 1 1 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(1100px 640px at 82% 12%, rgba(47, 143, 255, 0.16), transparent 60%),
+    radial-gradient(900px 520px at 8% 92%, rgba(47, 224, 255, 0.1), transparent 60%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 100%);
+}
 
 .hero__grid {
   position: absolute;
@@ -50,8 +133,8 @@
     linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 44px 44px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 35%, #000 40%, transparent 85%);
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 35%, #000 40%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 30% 40%, #000 40%, transparent 85%);
+  mask-image: radial-gradient(ellipse 80% 60% at 30% 40%, #000 40%, transparent 85%);
   opacity: 0.6;
 }
 
@@ -93,38 +176,30 @@
 }
 
 /* ---------------------------------------------------------------------- */
-/*  Layout — single centered column                                       */
+/*  Layout — content anchored to the left of the dark panel                */
 /* ---------------------------------------------------------------------- */
 
 .hero__inner {
-  /* A single vertical-padding variable drives both the top and bottom
-     padding (top additionally offsets the fixed navbar). Because both
-     sides always derive from the same value, the content stays exactly
-     centered in the visible area below the navbar at every breakpoint —
-     media queries below only ever need to override this one variable
-     instead of keeping two separate calc()s in sync. */
   --pad-y: clamp(16px, 3vh, 64px);
 
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 860px;
+  max-width: 560px;
   max-height: 100%;
-  margin: 0 auto;
-  padding-left: clamp(20px, 4vw, 64px);
-  padding-right: clamp(20px, 4vw, 64px);
+  margin: 0;
+  padding-left: clamp(24px, 5vw, 64px);
+  padding-right: clamp(20px, 4vw, 48px);
   padding-bottom: var(--pad-y);
   padding-top: calc(var(--nav-h) + var(--pad-y));
   display: flex;
-  justify-content: center;
 }
 
 .hero__content {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  align-items: flex-start;
+  text-align: left;
 }
 
 .hero__eyebrow {
@@ -141,6 +216,8 @@
   border: 1px solid var(--border);
   border-radius: 999px;
   backdrop-filter: blur(6px);
+  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.05s;
 }
 
 .hero__eyebrow-dot {
@@ -154,7 +231,7 @@
 
 .hero__headline {
   margin: clamp(10px, 2.2vh, 20px) 0 0;
-  font-size: clamp(1.8rem, 6.4vh, 3.8rem);
+  font-size: clamp(1.8rem, 5.6vh, 3.4rem);
   line-height: 1.12;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -166,22 +243,28 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(0.15s + var(--i, 0) * 0.1s);
 }
 
 .hero__subheadline {
-  margin: clamp(8px, 1.8vh, 20px) auto 0;
-  max-width: 56ch;
-  font-size: clamp(0.9rem, 1.3vw, 1.15rem);
+  margin: clamp(8px, 1.8vh, 20px) 0 0;
+  max-width: 46ch;
+  font-size: clamp(0.9rem, 1.3vw, 1.1rem);
   line-height: 1.6;
   color: var(--text-1);
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.4s;
 }
 
 .hero__ctas {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 14px;
   margin-top: clamp(16px, 2.8vh, 32px);
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.5s;
 }
 
 .hero__btn {
@@ -233,19 +316,21 @@
 
 .hero__stats {
   display: flex;
-  justify-content: center;
-  gap: clamp(20px, 4vw, 48px);
+  justify-content: flex-start;
+  gap: clamp(20px, 4vw, 40px);
   margin-top: clamp(18px, 3.4vh, 48px);
   padding-top: clamp(14px, 2vh, 28px);
   border-top: 1px solid var(--border);
   width: 100%;
   max-width: 480px;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.6s;
 }
 
 .hero__stat {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 4px;
 }
 
@@ -267,6 +352,16 @@
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mediaReveal {
+  from { opacity: 0; transform: scale(1.12); }
+  to { opacity: 1; transform: scale(1.06); }
+}
+
+@keyframes kenBurns {
+  from { transform: scale(1.06) translate3d(0, 0, 0); }
+  to { transform: scale(1.14) translate3d(-1%, -1%, 0); }
 }
 
 @keyframes pulseDot {
@@ -292,11 +387,45 @@
   }
 }
 
-@media (max-width: 640px) {
+/* Below this width the split layout gets cramped — the photo collapses
+   into a full-bleed background with a dark scrim, and the copy sits
+   directly on top of it instead of in its own panel. */
+@media (max-width: 780px) {
+  .hero {
+    display: block;
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    flex-basis: auto;
+  }
+
+  .hero__media-fade {
+    display: none;
+  }
+
+  .hero__media-scrim {
+    opacity: 1;
+  }
+
+  .hero__panel {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    background: none;
+  }
+
+  .hero__grid,
+  .hero__particles {
+    display: none;
+  }
+
   .hero__inner {
-    --pad-y: clamp(12px, 2.6vh, 20px);
+    max-width: 620px;
     padding-left: 20px;
     padding-right: 20px;
+    --pad-y: clamp(12px, 2.6vh, 20px);
   }
 
   .hero__headline {
