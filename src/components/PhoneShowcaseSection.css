@@ -1,0 +1,574 @@
+/* ======================================================================
+   PhoneShowcaseSection — a realistic Android phone with the live site
+   running inside it (via <iframe src="/?embed=1">, not a screenshot).
+   Token set and section scaffolding mirror StepsSection/IntroSection so
+   this slide reads as part of the same family.
+   ====================================================================== */
+.showcase {
+  --bg-0: #050914;
+  --bg-1: #0a1225;
+  --panel: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.22);
+  --brand-400: #36D52B;
+  --brand-300: #8AE682;
+  --cyan: #6EFF5A;
+  --text-0: #f5f8ff;
+  --text-1: #b7c2dd;
+  --text-2: #7c88a8;
+  --nav-h: 76px;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
+  width: 100%;
+  /* touch-action isn't inherited from the .pager__slide wrapper
+     SectionPager sets it on, so it has to be repeated on each section
+     that shouldn't scroll natively — see the matching note in
+     HeroSection.css. The phone's own iframe handles its own scrolling
+     internally regardless. */
+  touch-action: none;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(180deg, var(--bg-0) 0%, #081327 55%, var(--bg-1) 100%);
+  color: var(--text-0);
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* ---------------------------------------------------------------------- */
+/*  Backdrop                                                              */
+/* ---------------------------------------------------------------------- */
+
+.showcase__grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, #000 30%, transparent 88%);
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, #000 30%, transparent 88%);
+  opacity: 0.55;
+}
+
+.showcase__glow {
+  position: absolute;
+  z-index: 0;
+  top: 10%;
+  right: -8%;
+  width: 46vw;
+  height: 46vw;
+  max-width: 620px;
+  max-height: 620px;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(54, 213, 43, 0.22), transparent 70%);
+}
+
+/* ---------------------------------------------------------------------- */
+/*  Layout                                                                */
+/* ---------------------------------------------------------------------- */
+
+.showcase__inner {
+  --pad-y: 18px;
+
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  padding-left: clamp(20px, 4vw, 48px);
+  padding-right: clamp(20px, 4vw, 48px);
+  padding-bottom: var(--pad-y);
+  padding-top: calc(var(--nav-h) + var(--pad-y));
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+}
+
+/* Copy ------------------------------------------------------------------ */
+
+.showcase__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.showcase__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brand-300);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.showcase__eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(110, 255, 90, 0.2);
+  animation: livePulse 1.8s ease-in-out infinite;
+}
+
+.showcase__heading {
+  margin: 18px 0 0;
+  font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+  line-height: 1.16;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.showcase__heading em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--brand-300), var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.showcase__paragraph {
+  margin: 16px 0 0;
+  max-width: 48ch;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: var(--text-1);
+}
+
+.showcase__points {
+  list-style: none;
+  margin: clamp(18px, 3vh, 30px) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.showcase__points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--text-1);
+}
+
+.showcase__points svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  padding: 3px;
+  border-radius: 50%;
+  color: var(--cyan);
+  background: rgba(110, 255, 90, 0.12);
+  border: 1px solid rgba(110, 255, 90, 0.3);
+  box-sizing: border-box;
+}
+
+/* Filled gradient CTA — deliberately the opposite treatment from the
+   Hero's border-only button: this one sits on a dark, mostly-empty panel
+   rather than over a photo, so it can afford to be the loud, obvious
+   action (matches .nav__cta / .footer__cta-link). */
+.showcase__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: clamp(22px, 4vh, 36px);
+  padding: 14px 26px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #06101f;
+  text-decoration: none;
+  background: linear-gradient(120deg, var(--brand-400), var(--cyan));
+  box-shadow: 0 16px 34px -12px rgba(30, 170, 22, 0.6);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  white-space: nowrap;
+}
+
+.showcase__cta svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.25s ease;
+}
+
+.showcase__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 42px -14px rgba(30, 170, 22, 0.75);
+}
+
+.showcase__cta:hover svg {
+  transform: translateX(3px);
+}
+
+/* ---------------------------------------------------------------------- */
+/*  Stage — the phone                                                     */
+/* ---------------------------------------------------------------------- */
+
+.showcase__stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  perspective: 1400px;
+}
+
+/* `transform: scale()` never shrinks an element's own layout box — only
+   how it paints — so scaling .showcase__phone directly left this wrapper
+   still reserving its full, un-scaled 668px height in the grid row no
+   matter how small --phone-scale got, which is what was overflowing the
+   section on shorter/narrower viewports. Giving this wrapper an explicit
+   box sized to the *scaled* dimensions, then centering the still-full-size
+   phone inside it with a flex box, makes the reserved layout space match
+   what's actually painted. */
+.showcase__phone-scale {
+  --phone-scale: 1;
+  position: relative;
+  width: calc(320px * var(--phone-scale));
+  height: calc(668px * var(--phone-scale));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.showcase__phone {
+  --rot-x: 0deg;
+  --rot-y: 0deg;
+  position: relative;
+  flex-shrink: 0;
+  width: 320px;
+  height: 668px;
+  transform-style: preserve-3d;
+  transform: scale(var(--phone-scale)) rotateX(var(--rot-x)) rotateY(var(--rot-y));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: phoneFloat 5.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.phone__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -6%;
+  width: 78%;
+  height: 46px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.55), transparent 72%);
+  filter: blur(4px);
+  z-index: -1;
+}
+
+.phone__frame {
+  position: relative;
+  width: 320px;
+  height: 668px;
+  padding: 14px;
+  border-radius: 52px;
+  background: linear-gradient(155deg, #2c2c30 0%, #17171a 55%, #0a0a0b 100%);
+  box-shadow:
+    0 40px 70px -24px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    0 0 60px -14px rgba(54, 213, 43, 0.28);
+  box-sizing: border-box;
+}
+
+.phone__button {
+  position: absolute;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #232326, #0e0e10);
+}
+
+.phone__button--power {
+  right: -3px;
+  top: 168px;
+  width: 3px;
+  height: 76px;
+}
+
+.phone__button--vol-up {
+  left: -3px;
+  top: 148px;
+  width: 3px;
+  height: 46px;
+}
+
+.phone__button--vol-down {
+  left: -3px;
+  top: 202px;
+  width: 3px;
+  height: 46px;
+}
+
+.phone__screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 38px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.04) inset;
+}
+
+.phone__camera {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #3a3a3f, #050506 75%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.phone__iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #050914;
+}
+
+.phone__gesture-bar {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.55);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.phone__gloss {
+  position: absolute;
+  inset: 0;
+  border-radius: 52px;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.14) 0%, transparent 30%, transparent 100%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* Badges — siblings of the phone (not nested inside it) so they float
+   independently instead of inheriting the cursor-tilt transform. */
+
+.showcase__badge {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-0);
+  background: rgba(8, 14, 28, 0.72);
+  border: 1px solid var(--border-strong);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 12px 26px -12px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+}
+
+.showcase__badge--live {
+  top: 14%;
+  right: -8%;
+  color: var(--brand-300);
+}
+
+.showcase__badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(110, 255, 90, 0.22);
+  animation: livePulse 1.8s ease-in-out infinite;
+}
+
+.showcase__badge--tag {
+  bottom: 10%;
+  left: -10%;
+  color: var(--text-1);
+}
+
+/* ---------------------------------------------------------------------- */
+/*  Keyframes                                                             */
+/* ---------------------------------------------------------------------- */
+
+@keyframes phoneFloat {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -14px; }
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.8); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase__phone,
+  .showcase__eyebrow-dot,
+  .showcase__badge-dot {
+    animation: none !important;
+  }
+
+  .showcase__cta {
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/*  Responsive                                                            */
+/* ---------------------------------------------------------------------- */
+
+@media (max-width: 1200px) {
+  .showcase__phone-scale {
+    --phone-scale: 0.85;
+  }
+}
+
+@media (max-width: 980px) {
+  .showcase__inner {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    row-gap: 24px;
+    padding-top: calc(var(--nav-h) + 12px);
+  }
+
+  .showcase__copy {
+    align-items: center;
+    order: 1;
+  }
+
+  .showcase__stage {
+    order: 2;
+  }
+
+  .showcase__points {
+    align-items: center;
+  }
+
+  .showcase__points li {
+    text-align: left;
+  }
+
+  .showcase__phone-scale {
+    --phone-scale: 0.72;
+  }
+
+  .showcase__badge--live {
+    right: 2%;
+  }
+
+  .showcase__badge--tag {
+    left: 2%;
+  }
+}
+
+@media (max-width: 560px) {
+  .showcase {
+    --nav-h: 64px;
+  }
+
+  .showcase__inner {
+    row-gap: 16px;
+  }
+
+  .showcase__heading {
+    font-size: clamp(1.5rem, 6vw, 1.9rem);
+  }
+
+  .showcase__paragraph {
+    font-size: 0.86rem;
+  }
+
+  .showcase__points {
+    display: none;
+  }
+
+  .showcase__cta {
+    margin-top: 16px;
+    padding: 12px 22px;
+    font-size: 0.88rem;
+  }
+
+  .showcase__phone-scale {
+    --phone-scale: 0.56;
+  }
+
+  .showcase__badge {
+    padding: 6px 11px;
+    font-size: 0.7rem;
+  }
+}
+
+/* Short-viewport compaction — same approach used across the other
+   sections: tighten before ever clipping content against 100dvh. -------- */
+
+@media (min-width: 981px) and (max-height: 860px) {
+  .showcase__inner {
+    --pad-y: 8px;
+  }
+
+  .showcase__paragraph {
+    display: none;
+  }
+
+  .showcase__points {
+    margin-top: 14px;
+  }
+
+  .showcase__phone-scale {
+    --phone-scale: 0.68;
+  }
+}
+
+@media (min-width: 981px) and (max-height: 680px) {
+  .showcase__points {
+    display: none;
+  }
+
+  .showcase__cta {
+    margin-top: 16px;
+  }
+
+  .showcase__phone-scale {
+    --phone-scale: 0.56;
+  }
+}
+
+@media (max-width: 980px) and (max-height: 780px) {
+  .showcase__paragraph {
+    display: none;
+  }
+
+  .showcase__points {
+    display: none;
+  }
+
+  .showcase__phone-scale {
+    --phone-scale: 0.6;
+  }
+}

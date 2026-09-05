@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 import HeroSection from "./HeroSection";
 import IntroSection from "./IntroSection";
 import ServicesSection from "./ServicesSection";
+import PhoneShowcaseSection from "./PhoneShowcaseSection";
 import StepsSection from "./StepsSection";
 import ContactSection from "./ContactSection";
 import Footer from "./Footer";
@@ -15,10 +16,22 @@ const STEP_TRANSITION_MS = 500;
 const WHEEL_THRESHOLD = 10;
 const SWIPE_THRESHOLD = 42;
 
+// The phone showcase embeds a second copy of this very site in an <iframe
+// src="/?embed=1">. That nested copy runs this exact same module, so
+// without this guard it would try to embed a showcase of its own, which
+// would embed one of its own, forever. Reading the flag once here and
+// omitting the slide entirely on the embedded side caps the nesting at
+// exactly one phone.
+const isEmbedded =
+  typeof window !== "undefined" && new URLSearchParams(window.location.search).get("embed") === "1";
+
 const SLIDES = [
   { id: "home", label: "Home", render: () => <HeroSection /> },
   { id: "about", label: "About", render: () => <IntroSection /> },
   { id: "services", label: "Services", render: () => <ServicesSection /> },
+  ...(isEmbedded
+    ? []
+    : [{ id: "showcase", label: "Live Demo", render: () => <PhoneShowcaseSection /> }]),
   { id: "why-us", label: "Why Us", render: (activeStep) => <StepsSection activeStep={activeStep} /> },
   { id: "contact", label: "Contact", render: () => <ContactSection /> },
   { id: "footer", label: "Footer", render: () => <Footer brand="DigiWeb" /> },
