@@ -6,6 +6,7 @@ import IntroSection from "./IntroSection";
 import ServicesSection from "./ServicesSection";
 import PhoneShowcaseSection from "./PhoneShowcaseSection";
 import StepsSection from "./StepsSection";
+import PortfolioSection from "./PortfolioSection";
 import ContactSection from "./ContactSection";
 import Footer from "./Footer";
 import "./SectionPager.css";
@@ -33,6 +34,7 @@ const SLIDES = [
     ? []
     : [{ id: "showcase", label: "Live Demo", render: () => <PhoneShowcaseSection /> }]),
   { id: "why-us", label: "Why Us", render: (activeStep) => <StepsSection activeStep={activeStep} /> },
+  { id: "portfolio", label: "Portfolio", render: () => <PortfolioSection /> },
   { id: "contact", label: "Contact", render: () => <ContactSection /> },
   { id: "footer", label: "Footer", render: () => <Footer brand="DigiWeb" /> },
 ];
