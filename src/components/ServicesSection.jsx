@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import globalServicesImage from "../assets/global-services.jpg";
 import "./ServicesSection.css";
 
 /* ---------------------------------------------------------------------- */
@@ -150,16 +151,12 @@ function useTypewriter(text, speed = TYPE_SPEED_MS) {
  * ServicesSection
  *
  * Props:
- *  - companyName  {string}  Shown as the fallback initials in the central mark
- *  - logoSrc      {string}  URL/path to your company logo image (transparent PNG/SVG recommended)
  *  - eyebrow      {string}  Small tag line above the heading
  *  - heading      {string}  Section heading
  *  - subheading   {string}  Supporting paragraph
  *  - services     {Array}   Override the 5 default services — [{id, label, icon, description}]
  */
 export default function ServicesSection({
-  companyName = "DigiWeb",
-  logoSrc = "",
   eyebrow = "What We Offer",
   heading = "Our Services",
   subheading = "Everything you need to launch and grow, all under one roof.",
@@ -175,13 +172,6 @@ export default function ServicesSection({
   const [activeId, setActiveId] = useState(null);
 
   const list = (services && services.length ? services : DEFAULT_SERVICES).slice(0, 5);
-  const initials = companyName
-    .split(" ")
-    .map((w) => w[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
 
   const handlePointerMove = useCallback((e) => {
     const node = sectionRef.current;
@@ -299,6 +289,8 @@ export default function ServicesSection({
       onMouseLeave={handlePointerLeave}
     >
       {/* ambient background layers */}
+      <img src={globalServicesImage} alt="" className="services__bg-image" aria-hidden="true" />
+      <div className="services__bg-scrim" aria-hidden="true" />
       <div className="services__grid" aria-hidden="true" />
       <div ref={glowRef} className="services__glow" aria-hidden="true" />
 
@@ -317,13 +309,6 @@ export default function ServicesSection({
             <span className="services__ring services__ring--1" />
             <span className="services__ring services__ring--2" />
             <span className="services__ring services__ring--3" />
-            <div className="services__logo-circle">
-              {logoSrc ? (
-                <img src={logoSrc} alt={`${companyName} logo`} className="services__logo-img" />
-              ) : (
-                <span className="services__logo-fallback">{initials || "CO"}</span>
-              )}
-            </div>
           </div>
 
           <div className={`services__orbit ${activeId ? "is-paused" : ""}`}>
